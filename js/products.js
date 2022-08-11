@@ -25,7 +25,7 @@ function showProductsList() {
 // Una vez cargado el documento:
 
 document.addEventListener("DOMContentLoaded", function () {
-    getJSONData(PRODUCTS_URL + "101.json").then(function (resultObj) {
+    getJSONData(PRODUCTS_URL + "101" + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
             currentProductsArray = resultObj.data.products;
             showProductsList();
