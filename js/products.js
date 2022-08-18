@@ -1,10 +1,12 @@
 let currentProductsArray = [];
-let listContainer = document.getElementById("pro-list-container");
 
 function showProductsList() {
   let htmlContentToAppend = "";
-  for (let i = 0; i < currentProductsArray.length; i++) {
-    let product = currentProductsArray[i];
+  document.getElementById("pro-list-h2").innerHTML = "Productos";
+  document.getElementById("pro-list-desc").innerHTML = `Verás aquí todos los productos de la categoría <strong>${currentProductsArray.catName}</strong>.`;
+  
+  for (let i = 0; i < currentProductsArray.products.length; i++) {
+    let product = currentProductsArray.products[i];
     htmlContentToAppend += `<div class="list-group-item list-group-item-action cursor-active">
           <div class="row">
             <div class="col-3">
@@ -19,21 +21,20 @@ function showProductsList() {
             </div>
           </div>
         </div>`;
-    listContainer.innerHTML = htmlContentToAppend;
+    document.getElementById("pro-list-container").innerHTML = htmlContentToAppend;
   }
 }
 
 // Una vez cargado el documento:
 
 document.addEventListener("DOMContentLoaded", function () {
-  getJSONData(PRODUCTS_URL + "101" + EXT_TYPE).then(function (resultObj) {
+  getJSONData(PRODUCTS_URL + localStorage.getItem("catID") + EXT_TYPE).then(function (resultObj) {
     if (resultObj.status === "ok") {
-      currentProductsArray = resultObj.data.products;
+      currentProductsArray = resultObj.data;
       showProductsList();
     } else {
-      listContainer.innerHTML = "No se ha podido cargar el contenido.";
-      listContainer.style.marginTop = "100px";
-      listContainer.classList.add("alert", "alert-danger", "text-center");
+      document.getElementById("pro-list-container").innerHTML = "No se ha podido cargar el contenido.";
+      document.getElementById("pro-list-container").classList.add("alert", "alert-danger", "text-center");
     }
   })
 });
