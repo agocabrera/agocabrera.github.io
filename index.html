@@ -19,9 +19,20 @@
 <body>
   <main class="mt-5 text-center">
     <img src="img/login.png" alt="Logo" width="600">
-    <h1 class="h3 mt-3">Inicio de sesión</h1>
     <div class="container signin">
-      <div class="form-floating mb-3">
+      <h1 class="h3">Inicio de sesión</h1>
+      <div id="g_id_onload" data-client_id="797839961033-8uf7cm8mfs4sac1e7pn4msv54l4lvhlh.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse" data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin mt-3 mb-3" data-type="standard" data-size="large" data-theme="outline"
+        data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left" data-width=300>
+      </div>
+      <div class="row">
+        <hr class="col m-auto">
+        <strong class="col-auto">o</strong>
+        <hr class="col m-auto">
+      </div>
+      <div class="form-floating mt-3 mb-3">
         <input type="email" class="form-control" id="email" placeholder="Ingrese email">
         <label for="email">Email</label>
       </div>
@@ -42,6 +53,17 @@
       <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
     </div>
   </footer>
+  <div class="modal fade" id="modal" data-bs-backdrop="true" data-bs-keyboard="true" tabindex="-1"
+    aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" id="modalBody">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="js/login.js"></script>
 </body>
 
