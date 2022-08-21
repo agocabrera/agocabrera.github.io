@@ -21,7 +21,7 @@ document.getElementById("submit").addEventListener("click", function () {
     }
 
     modalContentToAppend += '</ul><button type="button" class="btn btn-primary float-end" data-bs-dismiss="modal">Cerrar</button>';
-    document.getElementById("modalBody").innerHTML = modalContentToAppend;
+    document.getElementById("modal-body").innerHTML = modalContentToAppend;
 
     if (loginOk) {
         window.location.href = "inicio.html";
