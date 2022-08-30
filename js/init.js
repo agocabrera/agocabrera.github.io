@@ -39,3 +39,7 @@ let getJSONData = function(url){
         return result;
     });
 }
+
+let navbarShowUsername = function() {
+  document.getElementById("navbar-username").innerHTML = localStorage.getItem("username");
+}
