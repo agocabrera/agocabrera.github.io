@@ -1,13 +1,17 @@
-let currentProductsArray = [];
+// Objeto que contiene la lista de productos, ID y nombre de la categoría a la que pertenecen.
+let currentProductsObj = {};
 
-function showProductsList() {
+// Lista que contiene los productos, antes de ser filtrados.
+let unfilteredProductsArray = [];
+
+// Mostrar los productos de la lista en el listado.
+function showProductsList(obj) {
   let htmlContentToAppend = "";
-  document.getElementById("pro-list-h2").innerHTML = "Productos";
-  document.getElementById("pro-list-desc").innerHTML = `Verás aquí todos los productos de la categoría <strong>${currentProductsArray.catName}</strong>.`;
-
-  for (let i = 0; i < currentProductsArray.products.length; i++) {
-    let product = currentProductsArray.products[i];
-    htmlContentToAppend += `<div class="list-group-item list-group-item-action cursor-active">
+  document.getElementById("pro-list-name").innerHTML = obj.catName;
+  if (obj.products.length != 0) {
+    for (let i = 0; i < obj.products.length; i++) {
+      let product = obj.products[i];
+      htmlContentToAppend += `<div class="list-group-item list-group-item-action cursor-active">
           <div class="row">
             <div class="col-3">
               <img src="${product.image}" alt="${product.description}" class="img-thumbnail">
@@ -21,20 +25,72 @@ function showProductsList() {
             </div>
           </div>
         </div>`;
-    document.getElementById("pro-list-container").innerHTML = htmlContentToAppend;
+    }
+  } else {
+    htmlContentToAppend = "No hay nada para mostrar.";
   }
+  document.getElementById("pro-list-container").innerHTML = htmlContentToAppend;
 }
 
-// Una vez cargado el documento:
+// Ordenar lista por precio (mayor a menor).
+document.getElementById("sortCostDesc").addEventListener("click", function () {
+  currentProductsObj.products.sort(function (a, b) {
+    return b.cost - a.cost;
+  });
+  showProductsList(currentProductsObj);
+});
 
+// Ordenar lista por precio (menor a mayor).
+document.getElementById("sortCostAsc").addEventListener("click", function () {
+  currentProductsObj.products.sort(function (a, b) {
+    return a.cost - b.cost;
+  });
+  showProductsList(currentProductsObj);
+});
+
+// Ordenar lista por cantidad vendidos (mayor a menor).
+document.getElementById("sortRelDesc").addEventListener("click", function () {
+  currentProductsObj.products.sort(function (a, b) {
+    return b.soldCount - a.soldCount;
+  });
+  showProductsList(currentProductsObj);
+});
+
+// Función que verifica si el costo del producto está dentro del mínimo y máximo del filtro.
+// Devuelve falso o verdadero para que el método filter() decida si remover el producto o no.
+function insideFilterRange(product) {
+  let min = parseInt(document.getElementById("filterCostMin").value);
+  let max = parseInt(document.getElementById("filterCostMax").value);
+  let cost = product.cost;
+  return cost >= min && cost <= max;
+}
+
+// Filtrar lista según precio mínimo y máximo.
+document.getElementById("filterCost").addEventListener("click", function () {
+  currentProductsObj.products = unfilteredProductsArray;
+  currentProductsObj.products = currentProductsObj.products.filter(insideFilterRange);
+  showProductsList(currentProductsObj);
+});
+
+// Dejar de filtrar la lista.
+document.getElementById("filterClear").addEventListener("click", function () {
+  document.getElementById("filterCostMin").value = "";
+  document.getElementById("filterCostMax").value = "";
+  currentProductsObj.products = unfilteredProductsArray;
+  showProductsList(currentProductsObj);
+});
+
+// Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
-  // Mostrar nombre de usuario en la barra de navegación:
+  // Mostrar nombre de usuario en la barra de navegación.
   navbarShowUsername();
 
+  // Solicitar el objeto que contiene la lista de productos.
   getJSONData(PRODUCTS_URL + localStorage.getItem("catID") + EXT_TYPE).then(function (resultObj) {
     if (resultObj.status === "ok") {
-      currentProductsArray = resultObj.data;
-      showProductsList();
+      currentProductsObj = resultObj.data;
+      unfilteredProductsArray = resultObj.data.products;
+      showProductsList(currentProductsObj);
     } else {
       document.getElementById("pro-list-container").innerHTML = "No se ha podido cargar el contenido.";
       document.getElementById("pro-list-container").classList.add("alert", "alert-danger", "text-center");
