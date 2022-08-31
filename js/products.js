@@ -1,17 +1,20 @@
 // Objeto que contiene la lista de productos, ID y nombre de la categoría a la que pertenecen.
 let currentProductsObj = {};
 
-// Lista que contiene los productos, antes de ser filtrados.
-let unfilteredProductsArray = [];
+// Lista que originalmente se obtuvo del objeto.
+// Sirve para restablecer la lista filtrada a su estado original.
+let unmodifiedProductsArray = [];
 
-// Mostrar los productos de la lista en el listado.
+// Mostrar en el listado los productos de la lista contenida en el objeto.
 function showProductsList(obj) {
+
   let htmlContentToAppend = "";
   document.getElementById("pro-list-name").innerHTML = obj.catName;
+
   if (obj.products.length != 0) {
-    for (let i = 0; i < obj.products.length; i++) {
-      let product = obj.products[i];
-      htmlContentToAppend += `<div class="list-group-item list-group-item-action cursor-active">
+    for (product of obj.products) {
+      htmlContentToAppend +=
+        `<div class="list-group-item list-group-item-action cursor-active">
           <div class="row">
             <div class="col-3">
               <img src="${product.image}" alt="${product.description}" class="img-thumbnail">
@@ -27,7 +30,7 @@ function showProductsList(obj) {
         </div>`;
     }
   } else {
-    htmlContentToAppend = "No hay nada para mostrar.";
+    htmlContentToAppend = "No hay productos para mostrar.";
   }
   document.getElementById("pro-list-container").innerHTML = htmlContentToAppend;
 }
@@ -57,7 +60,7 @@ document.getElementById("sortRelDesc").addEventListener("click", function () {
 });
 
 // Función que verifica si el costo del producto está dentro del mínimo y máximo del filtro.
-// Devuelve falso o verdadero para que el método filter() decida si remover el producto o no.
+// Devuelve falso o verdadero para que el método filter() decida si remover el producto de la lista o no.
 function insideFilterRange(product) {
   let min = parseInt(document.getElementById("filterCostMin").value);
   let max = parseInt(document.getElementById("filterCostMax").value);
@@ -67,7 +70,7 @@ function insideFilterRange(product) {
 
 // Filtrar lista según precio mínimo y máximo.
 document.getElementById("filterCost").addEventListener("click", function () {
-  currentProductsObj.products = unfilteredProductsArray;
+  currentProductsObj.products = unmodifiedProductsArray;
   currentProductsObj.products = currentProductsObj.products.filter(insideFilterRange);
   showProductsList(currentProductsObj);
 });
@@ -76,7 +79,7 @@ document.getElementById("filterCost").addEventListener("click", function () {
 document.getElementById("filterClear").addEventListener("click", function () {
   document.getElementById("filterCostMin").value = "";
   document.getElementById("filterCostMax").value = "";
-  currentProductsObj.products = unfilteredProductsArray;
+  currentProductsObj.products = unmodifiedProductsArray;
   showProductsList(currentProductsObj);
 });
 
@@ -89,11 +92,10 @@ document.addEventListener("DOMContentLoaded", function () {
   getJSONData(PRODUCTS_URL + localStorage.getItem("catID") + EXT_TYPE).then(function (resultObj) {
     if (resultObj.status === "ok") {
       currentProductsObj = resultObj.data;
-      unfilteredProductsArray = resultObj.data.products;
+      unmodifiedProductsArray = resultObj.data.products;
       showProductsList(currentProductsObj);
     } else {
       document.getElementById("pro-list-container").innerHTML = "No se ha podido cargar el contenido.";
-      document.getElementById("pro-list-container").classList.add("alert", "alert-danger", "text-center");
     }
   })
 });
