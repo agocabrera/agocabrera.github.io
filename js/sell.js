@@ -28,7 +28,7 @@ function updateTotalCosts() {
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function (e) {
-    // Mostrar nombre de usuario en la barra de navegación:
+    // Mostrar nombre de usuario en la barra de navegación.
     navbarShowUsername();
 
     document.getElementById("productCountInput").addEventListener("change", function () {

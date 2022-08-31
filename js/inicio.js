@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Mostrar nombre de usuario en la barra de navegación:
+    // Mostrar nombre de usuario en la barra de navegación.
     navbarShowUsername();
 
     document.getElementById("autos").addEventListener("click", function () {

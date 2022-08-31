@@ -1,4 +1,4 @@
-// Parse JSON Web Token:
+// Parse JSON Web Token.
 function parseJwt(token) {
     let base64Url = token.split('.')[1];
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -9,13 +9,13 @@ function parseJwt(token) {
     return JSON.parse(jsonPayload);
 };
 
-// Al iniciar sesión con Google:
+// Al iniciar sesión con Google.
 function handleCredentialResponse(response) {
     localStorage.setItem("username", parseJwt(response.credential).name);
     window.location.href = "inicio.html";
 }
 
-// Al iniciar sesión con email/contraseña:
+// Al iniciar sesión con email/contraseña.
 document.getElementById("submit").addEventListener("click", function () {
     let loginOk = true;
     let modalContentToAppend = "<p>Por favor ingrese:</p><ul>";
