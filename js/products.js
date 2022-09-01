@@ -1,18 +1,13 @@
-// Objeto que contiene la lista de productos, ID y nombre de la categoría a la que pertenecen.
-let currentProductsObj = {};
+// Lista que contiene los productos extraídos del objeto.
+let currentProductsArray = [];
 
-// Lista sin modificar que se obtuvo del objeto.
-// Sirve para restablecer la lista filtrada a su estado original.
-let originalProductsArray = [];
-
-// Mostrar en el listado los productos de la lista contenida en el objeto.
-function showProductsList(obj) {
+// Mostrar en el listado los productos de la lista que recibe como argumento.
+function showProductsList(array) {
 
   let htmlContentToAppend = "";
-  document.getElementById("pro-list-name").innerHTML = obj.catName;
 
-  if (obj.products.length != 0) {
-    for (product of obj.products) {
+  if (array.length != 0) {
+    for (product of array) {
       htmlContentToAppend +=
         `<div class="list-group-item list-group-item-action cursor-active">
           <div class="row">
@@ -35,9 +30,10 @@ function showProductsList(obj) {
   document.getElementById("pro-list-container").innerHTML = htmlContentToAppend;
 }
 
-function filterAndOrderList(obj) {
-  obj.products = originalProductsArray;
-  let productList = obj.products;
+// Filtrar y ordenar los productos de la lista según
+// los criterios establecidos por el usuario.
+function filterAndOrderList(array) {
+
   let filterCostMin = document.getElementById("filterCostMin");
   let filterCostMax = document.getElementById("filterCostMax");
   let search = document.getElementById("search");
@@ -48,7 +44,7 @@ function filterAndOrderList(obj) {
   // Si se estableció el costo mínimo del producto en el filtro,
   // quitar productos de la lista por debajo de ese mínimo.
   if (!Number.isNaN(parseInt(filterCostMin.value))) {
-    productList = productList.filter(function (product) {
+    array = array.filter(function (product) {
       return product.cost >= parseInt(filterCostMin.value);
     });
   }
@@ -56,7 +52,7 @@ function filterAndOrderList(obj) {
   // Si se estableció el costo máximo del producto en el filtro,
   // quitar productos de la lista por encima de ese máximo.
   if (!Number.isNaN(parseInt(filterCostMax.value))) {
-    productList = productList.filter(function (product) {
+    array = array.filter(function (product) {
       return product.cost <= parseInt(filterCostMax.value);
     });
   }
@@ -64,7 +60,7 @@ function filterAndOrderList(obj) {
   // Si el campo de búsqueda no está vacío, quitar productos de la lista
   // que no incluyan el contenido del campo en su nombre o descripción.
   if (search.value.toLowerCase() != "") {
-    productList = productList.filter(function (product) {
+    array = array.filter(function (product) {
       return product.name.toLowerCase().includes(search.value.toLowerCase())
         || product.description.toLowerCase().includes(search.value.toLowerCase());
     });
@@ -73,7 +69,7 @@ function filterAndOrderList(obj) {
   // Si el input tipo radio está seleccionado,
   // ordenar lista por costo, de mayor a menor.
   if (sortCostDesc.checked) {
-    productList.sort(function (a, b) {
+    array.sort(function (a, b) {
       return b.cost - a.cost;
     });
   }
@@ -81,7 +77,7 @@ function filterAndOrderList(obj) {
   // Si el input tipo radio está seleccionado,
   // ordenar lista por costo, de menor a mayor.
   if (sortCostAsc.checked) {
-    productList.sort(function (a, b) {
+    array.sort(function (a, b) {
       return a.cost - b.cost;
     });
   }
@@ -89,26 +85,20 @@ function filterAndOrderList(obj) {
   // Si el input tipo radio está seleccionado,
   // ordenar lista por cantidad vendidos, de mayor a menor.
   if (sortRelDesc.checked) {
-    productList.sort(function (a, b) {
+    array.sort(function (a, b) {
       return b.soldCount - a.soldCount;
     });
   }
 
-  obj.products = productList;
-  return obj;
+  return array;
 
-}
-
-// Combinar filterAndOrderList() y showProductsList().
-function filterOrderAndShow() {
-  showProductsList(filterAndOrderList(currentProductsObj));
 }
 
 // Quitar los filtros de costo del listado.
 function clearFilter() {
   document.getElementById("filterCostMin").value = "";
   document.getElementById("filterCostMax").value = "";
-  filterOrderAndShow();
+  showProductsList(filterAndOrderList(currentProductsArray));
 }
 
 // Una vez cargado el documento.
@@ -117,23 +107,23 @@ document.addEventListener("DOMContentLoaded", function () {
   // Mostrar nombre de usuario en la barra de navegación.
   navbarShowUsername();
 
+  // Agregar event listeners a los botones del listado.
+  document.getElementById("filterCost").addEventListener("click", () => showProductsList(filterAndOrderList(currentProductsArray)), false);
+  document.getElementById("sortCostDesc").addEventListener("click", () => showProductsList(filterAndOrderList(currentProductsArray)), false);
+  document.getElementById("sortCostAsc").addEventListener("click", () => showProductsList(filterAndOrderList(currentProductsArray)), false);
+  document.getElementById("sortRelDesc").addEventListener("click", () => showProductsList(filterAndOrderList(currentProductsArray)), false);
+  document.getElementById("search").addEventListener("input", () => showProductsList(filterAndOrderList(currentProductsArray)), false);
+  document.getElementById("filterClear").addEventListener("click", clearFilter, false);
+
   // Solicitar el objeto que contiene la lista de productos.
+  // Almacenar la lista en una variable y mostrar el nombre de la categoría en la página.
   getJSONData(PRODUCTS_URL + localStorage.getItem("catID") + EXT_TYPE).then(function (resultObj) {
     if (resultObj.status === "ok") {
-      currentProductsObj = resultObj.data;
-      originalProductsArray = resultObj.data.products;
-      showProductsList(currentProductsObj);
+      currentProductsArray = resultObj.data.products;
+      document.getElementById("pro-list-name").innerHTML = resultObj.data.catName;
+      showProductsList(filterAndOrderList(currentProductsArray));
     } else {
       document.getElementById("pro-list-container").innerHTML = "No se ha podido cargar el contenido.";
     }
-  })
-
-  // Agregar event listeners a los botones del listado.
-  document.getElementById("filterCost").addEventListener("click", filterOrderAndShow);
-  document.getElementById("sortCostDesc").addEventListener("click", filterOrderAndShow);
-  document.getElementById("sortCostAsc").addEventListener("click", filterOrderAndShow);
-  document.getElementById("sortRelDesc").addEventListener("click", filterOrderAndShow);
-  document.getElementById("search").addEventListener("input", filterOrderAndShow);
-  document.getElementById("filterClear").addEventListener("click", clearFilter);
-
+  });
 });
