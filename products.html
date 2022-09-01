@@ -38,13 +38,10 @@
   </nav>
   <main class="pb-5 container">
     <div class="text-center p-4">
-
       <h2>Productos</h2>
       <p class="lead">Verás aquí todos los productos de la categoría <strong id="pro-list-name"></strong>.</p>
-
     </div>
     <div class="container">
-
       <div class="row">
         <div class="col text-end">
           <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
@@ -53,13 +50,21 @@
             <input type="radio" class="btn-check" name="options" id="sortCostAsc">
             <label class="btn btn-light" for="sortCostAsc"><span class="fas fa-sort-amount-up mr-1"></span>$</label>
             <input type="radio" class="btn-check" name="options" id="sortRelDesc" checked>
-            <label class="btn btn-light" for="sortRelDesc"><span class="fas fa-sort-amount-down mr-1"></span>Rel.</label>
+            <label class="btn btn-light" for="sortRelDesc"><span
+                class="fas fa-sort-amount-down mr-1"></span>Rel.</label>
           </div>
         </div>
       </div>
-
       <div class="row">
-        <div class="col-lg-6 offset-lg-6 col-md-12 mb-1 container">
+        <div class="col input-group rounded mb-1 ">
+          <input type="search" class="form-control rounded" placeholder="Buscar" aria-label="Search"
+            aria-describedby="search-addon" id="search">
+          <span class="input-group-text border-0">
+            <span class="fas fa-search">
+            </span>
+          </span>
+        </div>
+        <div class="col container mb-1 ">
           <div class="row container p-0 m-0">
             <div class="col">
               <p class="font-weight-normal text-end my-2">Precio</p>
@@ -79,14 +84,11 @@
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="list-group" id="pro-list-container">
         </div>
       </div>
-
     </div>
-
   </main>
   <footer class="text-muted">
     <div class="container">
