@@ -37,9 +37,57 @@
     </div>
   </nav>
   <main>
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+    <div class="container d-grid gap-3 mt-4">
+      <div class="row">
+        <div class="col">
+          <div id="pro-img-carousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators" id="carousel-indicators">
+            </div>
+            <div class="carousel-inner" id="carousel-inner">
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#pro-img-carousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#pro-img-carousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Siguiente</span>
+            </button>
+          </div>
+        </div>
+        <div class="col" id="pro-info">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h2 class="mb-4">Comentarios</h2>
+          <div class="d-grid gap-3 mb-4" id="comments">
+          </div>
+        </div>
+        <div class="col">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h2 class="mb-4">Comentar</h2>
+          <div class="mb-4">
+            <h5>Tu opinión</h5>
+            <textarea name="" id="" cols="30" rows="10" class="form-control w-100"></textarea>
+          </div>
+          <div class="mb-4">
+            <h5>Tu puntuación</h5>
+            <select name="" id="" class="form-select w-auto d-inline">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <button type="button" class="btn btn-primary w-auto float-end">Enviar</button>
+          </div>
+        </div>
+        <div class="col">
+        </div>
       </div>
     </div>
   </main>
