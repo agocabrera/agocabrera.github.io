@@ -23,18 +23,25 @@ function showProductImages(productObj) {
     document.getElementById("carousel-indicators").getElementsByTagName("button")[0].classList.add("active");
 }
 
-function showComments(commentsArray) {
+function getAndShowComments(commentsArray) {
     if (commentsArray.length != 0) {
         for (comment of commentsArray) {
-            document.getElementById("comments").innerHTML += `
-            <div class="p-2 bg-light border border-dark rounded">
-              <span><strong>${comment.user}</strong> - ${comment.dateTime} - ${showStars(comment.score)}</span>
-              <p class="mb-0">${comment.description}</p>
-            </div>`;
+            showComment(comment);
         }
     } else {
-        document.getElementById("comments").innerHTML = "No hay comentarios para mostrar."
+        document.getElementById("comments-list").innerHTML = "No hay comentarios para mostrar."
     }
+}
+
+function showComment(commentObj) {
+    if (document.getElementById("comments-list").getElementsByTagName("div").length == 0) {
+        document.getElementById("comments-list").innerHTML = "";
+    }
+    document.getElementById("comments-list").innerHTML += `
+    <div class="p-2 bg-light border border-dark rounded">
+      <span><strong>${commentObj.user}</strong> - ${commentObj.dateTime} - ${showStars(commentObj.score)}</span>
+      <p class="mb-0">${commentObj.description}</p>
+    </div>`;
 }
 
 function showStars(number) {
@@ -72,10 +79,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     getJSONData(PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("proID") + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
-            showComments(resultObj.data);
+            getAndShowComments(resultObj.data);
         } else {
-            document.getElementById("comments").innerHTML = "No se han podido cargar los comentarios.";
+            document.getElementById("comments-list").innerHTML = "No se han podido cargar los comentarios.";
         }
     });
+
+    document.getElementById("comment-send").addEventListener("click", function () {
+        let newComment = {};
+
+        let date = new Date();
+        let yyyy = date.getFullYear();
+        let mm = ("0" + (date.getMonth() + 1)).slice(-2);
+        let dd = ("0" + date.getDate()).slice(-2);
+        let hour = ("0" + date.getHours()).slice(-2);
+        let minute = ("0" + date.getMinutes()).slice(-2);
+        let second = ("0" + date.getSeconds()).slice(-2);
+
+        newComment.product = localStorage.getItem("proID");
+        newComment.score = document.getElementById("comment-score").value;
+        newComment.description = document.getElementById("comment-description").value;
+        newComment.user = localStorage.getItem("username");
+        newComment.dateTime = `${yyyy}-${mm}-${dd} ${hour}:${minute}:${second}`;
+
+        showComment(newComment);
+
+        document.getElementById("comment-description").value = "";
+        document.getElementById("comment-score").value = 1;
+
+    }, false);
 
 });

@@ -61,7 +61,7 @@
       <div class="row">
         <div class="col">
           <h2 class="mb-4">Comentarios</h2>
-          <div class="d-grid gap-3 mb-4" id="comments">
+          <div class="d-grid gap-3 mb-4" id="comments-list">
           </div>
         </div>
         <div class="col">
@@ -71,19 +71,24 @@
         <div class="col">
           <h2 class="mb-4">Comentar</h2>
           <div class="mb-4">
-            <h5>Tu opinión</h5>
-            <textarea name="" id="" cols="30" rows="10" class="form-control w-100"></textarea>
+            <label for="comment-description">
+              <h5>Tu opinión</h5>
+            </label>
+            <textarea name="comment-description" id="comment-description" cols="30" rows="10"
+              class="form-control"></textarea>
           </div>
           <div class="mb-4">
-            <h5>Tu puntuación</h5>
-            <select name="" id="" class="form-select w-auto d-inline">
+            <label for="comment-score">
+              <h5>Tu puntuación</h5>
+            </label>
+            <select name="comment-score" id="comment-score" class="form-select w-auto d-inline">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
-            <button type="button" class="btn btn-primary w-auto float-end">Enviar</button>
+            <button type="button" id="comment-send" class="btn btn-primary w-auto float-end">Enviar</button>
           </div>
         </div>
         <div class="col">
