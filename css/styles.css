@@ -185,6 +185,16 @@ a.custom-card:hover {
   text-decoration: inherit;
 }
 
+.fa-star {
+  width: 12px;
+  height: 12px;
+  color: #6b6b6b;
+}
+
 .checked {
-  color: orange;
+  color: #fdd610;
+}
+
+#comments-list div {
+  background-color: #ececec;
 }

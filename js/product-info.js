@@ -24,7 +24,9 @@ function showProductImages(array) {
         </div>`;
 
         document.getElementById("carousel-indicators").innerHTML += `
-        <button type="button" data-bs-target="#pro-img-carousel" data-bs-slide-to="${i}" aria-label="Imagen ${i + 1}"></button>`;
+        <button type="button" data-bs-target="#pro-img-carousel" data-bs-slide-to="${i}" aria-label="Imagen ${i + 1}">
+          <img src="${image}" class="d-block w-100 img-fluid">
+        </button>`;
     }
     document.getElementById("carousel-inner").getElementsByTagName("div")[0].classList.add("active");
     document.getElementById("carousel-indicators").getElementsByTagName("button")[0].classList.add("active");
@@ -36,7 +38,7 @@ function showProductComments(array) {
     if (array.length != 0) {
         for (comment of array) {
             document.getElementById("comments-list").innerHTML += `
-            <div class="p-2 bg-light border border-dark rounded">
+            <div class="p-2 rounded-3">
               <span><strong>${comment.user}</strong> - ${comment.dateTime} - ${showStars(comment.score)}</span>
               <p class="mb-0">${comment.description}</p>
             </div>`;
@@ -59,7 +61,7 @@ function showStars(number) {
     }
 
     while (maxStars > 0) {
-        stars += '<span class="fas fa-star"></span>';
+        stars += '<span class="fa fa-star"></span>';
         maxStars--;
     }
 
