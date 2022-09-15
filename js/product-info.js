@@ -38,7 +38,7 @@ function showProductComments(array) {
     if (array.length != 0) {
         for (comment of array) {
             document.getElementById("comments-list").innerHTML += `
-            <div class="p-2 rounded-3">
+            <div class="p-2 shadow-sm rounded-3">
               <span><strong>${comment.user}</strong> - ${comment.dateTime} - ${showStars(comment.score)}</span>
               <p class="mb-0">${comment.description}</p>
             </div>`;

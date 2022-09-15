@@ -186,8 +186,8 @@ a.custom-card:hover {
 }
 
 .fa-star {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   color: #6b6b6b;
 }
 
@@ -196,5 +196,6 @@ a.custom-card:hover {
 }
 
 #comments-list div {
-  background-color: #ececec;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.125);
 }
