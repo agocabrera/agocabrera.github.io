@@ -1,4 +1,4 @@
-// Lista que contiene los productos extraídos del objeto.
+// Lista del objecto que contiene los productos.
 let currentProductsArray = [];
 
 // Al hacer click en un producto (atributo "onclick") del listado, guardar
