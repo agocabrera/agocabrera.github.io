@@ -70,9 +70,11 @@ function showStars(number) {
 
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
-
     // Mostrar nombre de usuario en la barra de navegación.
     navbarShowUsername();
+
+    // Agregar event listener al botón de cerrar sesión.
+    document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
 
     // Obtener el objeto con la información del producto actual y
     // llamar a showProductInfo() y showProductImages().

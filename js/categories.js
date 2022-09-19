@@ -90,6 +90,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
     // Mostrar nombre de usuario en la barra de navegación.
     navbarShowUsername();
 
+    // Agregar event listener al botón de cerrar sesión.
+    document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
+
     getJSONData(CATEGORIES_URL).then(function (resultObj) {
         if (resultObj.status === "ok") {
             currentCategoriesArray = resultObj.data

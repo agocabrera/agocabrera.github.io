@@ -110,9 +110,11 @@ function clearFilter() {
 
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
-
   // Mostrar nombre de usuario en la barra de navegación.
   navbarShowUsername();
+
+  // Agregar event listener al botón de cerrar sesión.
+  document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
 
   // Agregar event listeners a los botones del listado.
   document.getElementById("filterCost").addEventListener("click", () => showProductsList(filterAndOrderList(currentProductsArray)), false);

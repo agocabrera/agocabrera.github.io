@@ -41,5 +41,10 @@ let getJSONData = function (url) {
 }
 
 let navbarShowUsername = function () {
-  document.getElementById("navbar-username").innerHTML = localStorage.getItem("username");
+  document.getElementById("navbar-user-dropdown").innerHTML = localStorage.getItem("username");
+}
+
+let navbarLogout = function () {
+  localStorage.removeItem("username");
+  window.location.href = "index.html";
 }
