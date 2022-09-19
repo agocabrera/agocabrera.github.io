@@ -195,7 +195,16 @@ a.custom-card:hover {
   color: #fdd610;
 }
 
-#comments-list div {
-  background-color: #FFFFFF;
+#comments-list > div {
   border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+#pro-related > div {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  width: 48%;
+  cursor: pointer;
+}
+
+#pro-related > div:hover {
+  background-color: #f8f9fa
 }

@@ -1,13 +1,6 @@
 // Lista del objecto que contiene los productos.
 let currentProductsArray = [];
 
-// Al hacer click en un producto (atributo "onclick") del listado, guardar
-// el ID del producto en el almacenamiento local y redirigir a "product-info.html".
-function setProID(id) {
-  localStorage.setItem("proID", id);
-  window.location = "product-info.html";
-}
-
 // Mostrar en el listado los productos de la lista que recibe como argumento.
 function showProductsList(array) {
 

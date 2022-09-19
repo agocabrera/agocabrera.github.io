@@ -40,6 +40,13 @@ let getJSONData = function (url) {
     });
 }
 
+// Al hacer click en un producto (atributo "onclick") del listado, guardar
+// el ID del producto en el almacenamiento local y redirigir a "product-info.html".
+let setProID = function (id) {
+  localStorage.setItem("proID", id);
+  window.location = "product-info.html";
+}
+
 let navbarShowUsername = function () {
   document.getElementById("navbar-user-dropdown").innerHTML = localStorage.getItem("username");
 }

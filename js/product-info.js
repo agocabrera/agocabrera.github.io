@@ -3,14 +3,14 @@ productCommentsArray = [];
 
 // Tomar del objeto los datos del producto actual y mostrarlos en la página.
 function showProductInfo(object) {
-    document.getElementById("pro-info").innerHTML = `
-    <span class="d-inline fw-light">${object.category}</span>
-    <span class="float-end fw-light">${object.soldCount} vendidos</span>
-    <div class="d-grid gap-2">
-      <h1 class="fs-1 mb-0">${object.name}</h1>
-      <span class="fw-bold fs-4">${object.currency} ${object.cost}</span>
-      <p>${object.description}</p>
-    </div>`;
+    document.getElementById("pro-info").innerHTML =
+        `<span class="d-inline fw-light">${object.category}</span>
+        <span class="float-end fw-light">${object.soldCount} vendidos</span>
+        <div class="d-grid gap-2">
+            <h1 class="fs-1 mb-0">${object.name}</h1>
+            <span class="fw-bold fs-4">${object.currency} ${object.cost}</span>
+            <p>${object.description}</p>
+        </div>`;
 }
 
 // Iterar sobre la lista de imágenes del producto actual para mostrarlas en el carousel.
@@ -18,18 +18,32 @@ function showProductInfo(object) {
 function showProductImages(array) {
     for (let i = 0; i < array.length; i++) {
         const image = array[i];
-        document.getElementById("carousel-inner").innerHTML += `
-        <div class="carousel-item">
-          <img src="${image}" class="d-block w-100">
-        </div>`;
+        document.getElementById("carousel-inner").innerHTML +=
+            `<div class="carousel-item">
+                <img src="${image}" class="d-block w-100">
+            </div>`;
 
-        document.getElementById("carousel-indicators").innerHTML += `
-        <button type="button" data-bs-target="#pro-img-carousel" data-bs-slide-to="${i}" aria-label="Imagen ${i + 1}">
-          <img src="${image}" class="d-block w-100 img-fluid">
-        </button>`;
+        document.getElementById("carousel-indicators").innerHTML +=
+            `<button type="button" data-bs-target="#pro-img-carousel" data-bs-slide-to="${i}" aria-label="Imagen ${i + 1}">
+                <img src="${image}" class="d-block w-100 img-fluid">
+            </button>`;
     }
     document.getElementById("carousel-inner").getElementsByTagName("div")[0].classList.add("active");
     document.getElementById("carousel-indicators").getElementsByTagName("button")[0].classList.add("active");
+}
+
+// Iterar sobre la lista de productos relacionados al producto actual para mostrarlos en la página.
+function showProductRelated(array) {
+    for (let i = 0; i < array.length; i++) {
+        const product = array[i];
+        document.getElementById("pro-related").innerHTML +=
+            `<div class="card shadow-sm rounded-3" onclick="setProID(${product.id})">
+                <img src="${product.image}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                </div>
+            </div>`;
+    }
 }
 
 // Iterar sobre la lista de comentarios del producto actual para mostrarlos en la página.
@@ -37,11 +51,11 @@ function showProductComments(array) {
     document.getElementById("comments-list").innerHTML = "";
     if (array.length != 0) {
         for (comment of array) {
-            document.getElementById("comments-list").innerHTML += `
-            <div class="p-2 shadow-sm rounded-3">
-              <span><strong>${comment.user}</strong> - ${comment.dateTime} - ${showStars(comment.score)}</span>
-              <p class="mb-0">${comment.description}</p>
-            </div>`;
+            document.getElementById("comments-list").innerHTML +=
+                `<div class="p-2 shadow-sm rounded-3">
+                    <span><strong>${comment.user}</strong> - ${comment.dateTime} - ${showStars(comment.score)}</span>
+                    <p class="mb-0">${comment.description}</p>
+                </div>`;
         }
     } else {
         document.getElementById("comments-list").innerHTML = "No hay comentarios para mostrar."
@@ -82,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (resultObj.status === "ok") {
             showProductInfo(resultObj.data);
             showProductImages(resultObj.data.images);
+            showProductRelated(resultObj.data.relatedProducts);
         } else {
             document.getElementById("pro-info").innerHTML = "No se ha podido cargar el contenido.";
         }
