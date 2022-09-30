@@ -9,7 +9,7 @@ function showProductsList(array) {
   if (array.length != 0) {
     for (product of array) {
       htmlContentToAppend +=
-        `<div onclick="setProID(${product.id})" class="list-group-item list-group-item-action cursor-active">
+        `<div onclick="setId('product', ${product.id})" class="list-group-item list-group-item-action cursor-active">
           <div class="row">
             <div class="col-3">
               <img src="${product.image}" alt="${product.description}" class="img-thumbnail">

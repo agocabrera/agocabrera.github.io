@@ -37,7 +37,7 @@ function showProductRelated(array) {
     for (let i = 0; i < array.length; i++) {
         const product = array[i];
         document.getElementById("pro-related").innerHTML +=
-            `<div class="card shadow-sm rounded-3" onclick="setProID(${product.id})">
+            `<div class="card shadow-sm rounded-3" onclick="setId('product', ${product.id})">
                 <img src="${product.image}" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">${product.name}</h5>

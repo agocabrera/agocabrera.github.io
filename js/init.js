@@ -40,11 +40,20 @@ let getJSONData = function (url) {
     });
 }
 
-// Al hacer click en un producto (atributo "onclick") del listado, guardar
-// el ID del producto en el almacenamiento local y redirigir a "product-info.html".
-let setProID = function (id) {
-  localStorage.setItem("proID", id);
-  window.location = "product-info.html";
+// Al hacer click en un producto o categoría (atributo "onclick") del listado, guardar
+// el ID del producto o categoría en el almacenamiento local y redirigir a donde corresponda.
+let setId = function (type, id) {
+
+  if (type === "product") {
+    localStorage.setItem("proID", id);
+    window.location = "product-info.html";
+  }
+
+  if (type === "category") {
+    localStorage.setItem("catID", id);
+    window.location = "products.html"
+  }
+
 }
 
 let navbarShowUsername = function () {
