@@ -45,8 +45,57 @@
   </nav>
   <main>
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+      <div class="row mt-4">
+        <div class="col-2">
+        </div>
+        <div class="col-8">
+          <h1 class="text-center mb-4">Carrito</h1>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Costo</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="cart-items">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-6">
+          <h2 class="mb-4">Dirección de envío</h2>
+          <div class="input-group mb-2">
+            <span class="input-group-text">Calle</span>
+            <input type="text" class="form-control" id="shipping-street">
+            <span class="input-group-text">Número</span>
+            <input type="text" class="form-control" id="shipping-number">
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">Esquina</span>
+            <input type="text" class="form-control" id="shipping-cross">
+          </div>
+        </div>
+        <div class="col">
+        </div>
+        <div class="col-4">
+          <h2 class="mb-4">Tipo de envío</h2>
+          <div class="form-check">
+            <input type="radio" class="form-check-input" name="shipping" value="1" id="shipping-premium">
+            <label for="shipping-premium" class="form-check-label">Premium: 2 a 5 días (15%)</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" class="form-check-input" name="shipping" value="2" id="shipping-express">
+            <label for="shipping-express" class="form-check-label">Express: 5 a 8 días (7%)</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" class="form-check-input" name="shipping" value="3" id="shipping-standard">
+            <label for="shipping-standard" class="form-check-label">Standard: 12 a 15 días (5%)</label>
+          </div>
+        </div>
       </div>
     </div>
   </main>

@@ -51,7 +51,7 @@ let setId = function (type, id) {
 
   if (type === "category") {
     localStorage.setItem("catID", id);
-    window.location = "products.html"
+    window.location = "products.html";
   }
 
 }

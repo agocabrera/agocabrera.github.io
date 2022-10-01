@@ -208,3 +208,19 @@ a.custom-card:hover {
 #pro-related > div:hover {
   background-color: #f8f9fa
 }
+
+#cart-items img {
+  height: 50px;
+}
+
+#cart-items td {
+  vertical-align: middle;
+}
+
+#cart-items input {
+  max-width: 60px;
+}
+
+#shipping-number {
+  max-width: 100px;
+}
