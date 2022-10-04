@@ -221,6 +221,15 @@ a.custom-card:hover {
   max-width: 60px;
 }
 
+#cart-items button {
+  border: 0px;
+  background-color: inherit;
+}
+
+#cart-items span {
+  pointer-events: none;
+}
+
 #shipping-number {
   max-width: 100px;
 }

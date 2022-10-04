@@ -1,5 +1,11 @@
+// Producto actual.
+let product = {};
+
 // Lista de comentarios del producto actual.
-productCommentsArray = [];
+let productCommentsArray = [];
+
+// Lista de productos en el carrito (almacenamiento local).
+let cartItemList = [];
 
 // Tomar del objeto los datos del producto actual y mostrarlos en la página.
 function showProductInfo(object) {
@@ -10,7 +16,28 @@ function showProductInfo(object) {
             <h1 class="fs-1 mb-0">${object.name}</h1>
             <span class="fw-bold fs-4">${object.currency} ${object.cost}</span>
             <p>${object.description}</p>
+            <button type="button" class="btn btn-success" id="buy">Comprar</button>
         </div>`;
+
+    getCartList("cartItemList");
+
+    // Agregar event listener al botón de comprar, para al presionarlo crear un objeto nuevo
+    // con la información del producto y agregarlo al carrito en el almacenamiento local.
+    document.getElementById("buy").addEventListener("click", function () {
+        let newCartItem = {};
+        newCartItem.id = product.id;
+        newCartItem.name = product.name;
+        newCartItem.count = 1;
+        newCartItem.unitCost = product.cost;
+        newCartItem.currency = product.currency;
+        newCartItem.image = product.images[0];
+
+        cartItemList.push(newCartItem);
+        localStorage.setItem("cartItemList", JSON.stringify(cartItemList));
+        document.getElementById("buy").classList.add("disabled");
+
+    }, false);
+
 }
 
 // Iterar sobre la lista de imágenes del producto actual para mostrarlas en el carousel.
@@ -82,6 +109,23 @@ function showStars(number) {
     return stars;
 }
 
+// Obtener lista de productos en el carrito desde el almacenamiento local.
+// Desactivar el botón de comprar si el producto actual ya se encuentra en el carrito.
+function getCartList(key) {
+    if (localStorage.getItem(key) != null) {
+        cartItemList = JSON.parse(localStorage.getItem(key));
+
+        for (let i = 0; i < cartItemList.length; i++) {
+            let item = cartItemList[i];
+            if (item.id === product.id) {
+                document.getElementById("buy").classList.add("disabled");
+                break;
+            }
+        }
+
+    }
+}
+
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
     // Mostrar nombre de usuario en la barra de navegación.
@@ -94,9 +138,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // llamar a showProductInfo() y showProductImages().
     getJSONData(PRODUCT_INFO_URL + localStorage.getItem("proID") + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
-            showProductInfo(resultObj.data);
-            showProductImages(resultObj.data.images);
-            showProductRelated(resultObj.data.relatedProducts);
+            product = resultObj.data;
+            showProductInfo(product);
+            showProductImages(product.images);
+            showProductRelated(product.relatedProducts);
         } else {
             document.getElementById("pro-info").innerHTML = "No se ha podido cargar el contenido.";
         }
