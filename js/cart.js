@@ -1,73 +1,83 @@
-remoteCartItemsArray = [];
-localCartItemsArray = [];
+let cartItems = [];
 
-function showCartItems(array, clearContainer) {
-    if (clearContainer) {
-        document.getElementById("cart-items").innerHTML = "";
-    }
-    
+function showCartItems(array) {
+    document.getElementById("cart-items").innerHTML = "";
+
     for (let i = 0; i < array.length; i++) {
         let item = array[i];
         document.getElementById("cart-items").innerHTML +=
-            `<tr>
-                <td><img src="${item.image}"></td>
+            `<tr id="item-${item.id}">
+                <td><img src="${item.image}" onclick="setId('product', ${item.id})"></td>
                 <td>${item.name}</td>
-                <td>${item.currency} <span id="cost-${item.id}">${item.unitCost}</span></td>
+                <td>${item.currency} <span class="item-cost">${item.unitCost}</span></td>
                 <td>
                     <div class="input-group input-group-sm">
-                        <input type="number" class="form-control quantity" id="quantity-${item.id}" min="1" value="${item.count}">
+                        <input type="number" class="form-control item-count" min="1" value="${item.count}">
                     </div>
                 </td>
-                <td><strong>${item.currency} <span id="subtotal-${item.id}">${item.unitCost * item.count}</span></strong></td>
-                <td><button type="button" class="remove" id="remove-${item.id}"><span class="fa fa-trash"></span></button></td>
+                <td><strong>${item.currency} <span class="item-subtotal">${item.unitCost * item.count}</span></strong></td>
+                <td><button type="button" class="item-remove"><span class="fa fa-trash"></span></button></td>
             </tr>`;
     }
 
-    let quantityClassCollection = document.getElementsByClassName("quantity");
-    for (let i = 0; i < quantityClassCollection.length; i++) {
-        let inputElement = quantityClassCollection[i];
+    let countClassCollection = document.getElementsByClassName("item-count");
+    for (let i = 0; i < countClassCollection.length; i++) {
+        let inputElement = countClassCollection[i];
         inputElement.addEventListener("input", setNewSubtotal, false);
     }
 
-    let removeClassCollection = document.getElementsByClassName("remove");
+    let removeClassCollection = document.getElementsByClassName("item-remove");
     for (let i = 0; i < removeClassCollection.length; i++) {
         let buttonElement = removeClassCollection[i];
         buttonElement.addEventListener("click", removeItemFromCart, false);
     }
-
 }
 
 function setNewSubtotal(event) {
-    console.log(event);
-    let itemCount = event.target.value;
-    let itemId = event.target.id.replace("quantity-", "");
-    let itemCost = document.getElementById("cost-" + itemId).innerHTML;
+    let parentTrElement = event.target.closest("tr");
+    let itemToUpdateId = parseInt(parentTrElement.id.replace("item-", ""));
+    let itemToUpdateCount = parseInt(parentTrElement.querySelector(".item-count").value);
+    let itemToUpdateCost = parseInt(parentTrElement.querySelector(".item-cost").innerHTML);
 
-    document.getElementById("subtotal-" + itemId).innerHTML = itemCost * itemCount;
+    for (let i = 0; i < cartItems.length; i++) {
+        let item = cartItems[i];
+        if (item.id === itemToUpdateId) {
+            item.count = itemToUpdateCount;
+            localStorage.setItem("cart", JSON.stringify(cartItems));
+            showCartItems(cartItems);
+            break;
+        }
+    }
+
+    parentTrElement.querySelector(".item-subtotal").innerHTML = itemToUpdateCost * itemToUpdateCount;
 }
 
 function removeItemFromCart(event) {
-    let itemToRemoveId = parseInt(event.target.id.replace("remove-", ""));
-    for (let i = 0; i < localCartItemsArray.length; i++) {
-        let cartItem = localCartItemsArray[i];
-        if (cartItem.id === itemToRemoveId) {
-            localCartItemsArray.splice(i, 1);
-            localStorage.setItem("cartItemList", JSON.stringify(localCartItemsArray));
-            showCartItems(remoteCartItemsArray, true);
-            showCartItems(localCartItemsArray, false);
+    let parentTrElement = event.target.closest("tr");
+    let itemToRemoveId = parseInt(parentTrElement.id.replace("item-", ""));
+    for (let i = 0; i < cartItems.length; i++) {
+        let item = cartItems[i];
+        if (item.id === itemToRemoveId) {
+            cartItems.splice(i, 1);
+            localStorage.setItem("cart", JSON.stringify(cartItems));
+            showCartItems(cartItems);
             break;
         }
     }
 }
 
-function getCartList(key) {
-    let cartItemList = JSON.parse(localStorage.getItem(key));
-    if (cartItemList != null) {
-        for (let i = 0; i < cartItemList.length; i++) {
-            let item = cartItemList[i];
-            localCartItemsArray.push(item);
+function removeCartDuplicates(array) {
+    let uniqueIds = [];
+
+    return array.filter(function (item) {
+        if (uniqueIds.includes(item.id)) {
+            return false;
+        } else {
+            uniqueIds.push(item.id);
+            return true;
         }
-    }
+    });
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -79,10 +89,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     getJSONData(CART_INFO_URL + 25801 + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
-            remoteCartItemsArray = resultObj.data.articles;
-            showCartItems(remoteCartItemsArray, true);
-            getCartList("cartItemList");
-            showCartItems(localCartItemsArray, false);
+
+            let remoteCartItems = resultObj.data.articles;
+            let localCartItems = [];
+
+            if (localStorage.getItem("cart") != null) {
+                localCartItems = JSON.parse(localStorage.getItem("cart"));
+            }
+
+            cartItems = localCartItems.concat(remoteCartItems);
+            cartItems = removeCartDuplicates(cartItems);
+            localStorage.setItem("cart", JSON.stringify(cartItems));
+
+            showCartItems(cartItems);
+
         } else {
             document.getElementById("cart-items").innerHTML = "No se ha podido cargar el carrito.";
         }

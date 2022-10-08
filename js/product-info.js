@@ -5,7 +5,7 @@ let product = {};
 let productCommentsArray = [];
 
 // Lista de productos en el carrito (almacenamiento local).
-let cartItemList = [];
+let cartItems = [];
 
 // Tomar del objeto los datos del producto actual y mostrarlos en la página.
 function showProductInfo(object) {
@@ -19,9 +19,7 @@ function showProductInfo(object) {
             <button type="button" class="btn btn-success" id="buy">Comprar</button>
         </div>`;
 
-    getCartList("cartItemList");
-
-    // Agregar event listener al botón de comprar, para al presionarlo crear un objeto nuevo
+    // Agregar event listener al botón de comprar, al presionarlo crear un objeto nuevo
     // con la información del producto y agregarlo al carrito en el almacenamiento local.
     document.getElementById("buy").addEventListener("click", function () {
         let newCartItem = {};
@@ -32,11 +30,19 @@ function showProductInfo(object) {
         newCartItem.currency = product.currency;
         newCartItem.image = product.images[0];
 
-        cartItemList.push(newCartItem);
-        localStorage.setItem("cartItemList", JSON.stringify(cartItemList));
+        cartItems.push(newCartItem);
+        localStorage.setItem("cart", JSON.stringify(cartItems));
         document.getElementById("buy").classList.add("disabled");
-
     }, false);
+
+    // Desactivar el botón de comprar si el producto actual ya se encuentra en el carrito.
+    for (let i = 0; i < cartItems.length; i++) {
+        let item = cartItems[i];
+        if (item.id === product.id) {
+            document.getElementById("buy").classList.add("disabled");
+            break;
+        }
+    }
 
 }
 
@@ -109,23 +115,6 @@ function showStars(number) {
     return stars;
 }
 
-// Obtener lista de productos en el carrito desde el almacenamiento local.
-// Desactivar el botón de comprar si el producto actual ya se encuentra en el carrito.
-function getCartList(key) {
-    if (localStorage.getItem(key) != null) {
-        cartItemList = JSON.parse(localStorage.getItem(key));
-
-        for (let i = 0; i < cartItemList.length; i++) {
-            let item = cartItemList[i];
-            if (item.id === product.id) {
-                document.getElementById("buy").classList.add("disabled");
-                break;
-            }
-        }
-
-    }
-}
-
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
     // Mostrar nombre de usuario en la barra de navegación.
@@ -133,6 +122,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Agregar event listener al botón de cerrar sesión.
     document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
+
+    // Obtener carrito (array) desde el almacenamiento local, para desactivar
+    // el botón de comprar en caso que el producto ya esté en el mismo.
+    if (localStorage.getItem("cart") != null) {
+        cartItems = JSON.parse(localStorage.getItem("cart"));
+    }
 
     // Obtener el objeto con la información del producto actual y
     // llamar a showProductInfo() y showProductImages().

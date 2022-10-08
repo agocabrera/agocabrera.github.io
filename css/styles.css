@@ -211,6 +211,7 @@ a.custom-card:hover {
 
 #cart-items img {
   height: 50px;
+  cursor: pointer;
 }
 
 #cart-items td {
