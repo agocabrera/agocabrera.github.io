@@ -1,13 +1,13 @@
-// Producto actual.
+// Objeto que contiene la información del producto.
 let product = {};
 
-// Lista de comentarios del producto actual.
+// Lista de comentarios del producto.
 let productCommentsArray = [];
 
 // Lista de productos en el carrito (almacenamiento local).
 let cartItems = [];
 
-// Tomar del objeto los datos del producto actual y mostrarlos en la página.
+// Tomar del objeto los datos del producto y mostrarlos en la página.
 function showProductInfo(object) {
     document.getElementById("pro-info").innerHTML =
         `<span class="d-inline fw-light">${object.category}</span>
@@ -35,7 +35,7 @@ function showProductInfo(object) {
         document.getElementById("buy").classList.add("disabled");
     }, false);
 
-    // Desactivar el botón de comprar si el producto actual ya se encuentra en el carrito.
+    // Desactivar el botón de comprar si el producto ya se encuentra en el carrito.
     for (let i = 0; i < cartItems.length; i++) {
         let item = cartItems[i];
         if (item.id === product.id) {
@@ -46,8 +46,8 @@ function showProductInfo(object) {
 
 }
 
-// Iterar sobre la lista de imágenes del producto actual para mostrarlas en el carousel.
-// Agregar clase "active" al <div> de la primer imagen y al primer <button> para "arrancar" el carousel.
+// Iterar sobre la lista de imágenes del producto para mostrarlas en el carrusel.
+// Agregar clase "active" al <div> de la primer imagen y al primer <button> para que el carrusel empiece el ciclo.
 function showProductImages(array) {
     for (let i = 0; i < array.length; i++) {
         const image = array[i];
@@ -79,7 +79,7 @@ function showProductRelated(array) {
     }
 }
 
-// Iterar sobre la lista de comentarios del producto actual para mostrarlos en la página.
+// Iterar sobre la lista de comentarios del producto para mostrarlos en la página.
 function showProductComments(array) {
     document.getElementById("comments-list").innerHTML = "";
     if (array.length != 0) {
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cartItems = JSON.parse(localStorage.getItem("cart"));
     }
 
-    // Obtener el objeto con la información del producto actual y
+    // Obtener el objeto con la información del producto y
     // llamar a showProductInfo() y showProductImages().
     getJSONData(PRODUCT_INFO_URL + localStorage.getItem("proID") + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Obtener la lista con los comentarios del producto actual y
+    // Obtener la lista con los comentarios del producto y
     // llamar a showProductComments().
     getJSONData(PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("proID") + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Al hacer click en el botón para enviar un comentario, crear un objeto nuevo para
     // guardar los datos relacionados a ese comentario, agregar ese objeto a la lista
-    // de comentarios del producto actual y llamar de nuevo a showProductComments().
+    // de comentarios del producto y llamar de nuevo a showProductComments().
     document.getElementById("comment-send").addEventListener("click", function () {
         let newComment = {};
 

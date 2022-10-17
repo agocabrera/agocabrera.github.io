@@ -1,5 +1,9 @@
+// Lista que contiene los ítems del carrito.
 let cartItems = [];
 
+// Mostrar los ítems del carrito en la página.
+// Agregar un event listener a cada <input> que tiene la cantidad de ese ítem
+// y también a cada <button> que quita ese ítem del carrito.
 function showCartItems(array) {
     document.getElementById("cart-items").innerHTML = "";
 
@@ -33,6 +37,11 @@ function showCartItems(array) {
     }
 }
 
+// Función callback que calcula el nuevo subtotal del item en el carrito.
+// "Ir hacia atrás" desde el target del evento (el <input> con la cantidad), hasta encontrarse con 
+// el <tr> asociado al ítem, obtener el ID del ítem a partir del <tr>, obtener el precio unitario y 
+// la cantidad del ítem buscándolos por sus clases y por último actualizar la lista del carrito con
+// la cantidad nueva y el subtotal que muestra la página.
 function setNewSubtotal(event) {
     let parentTrElement = event.target.closest("tr");
     let itemToUpdateId = parseInt(parentTrElement.id.replace("item-", ""));
@@ -52,6 +61,9 @@ function setNewSubtotal(event) {
     parentTrElement.querySelector(".item-subtotal").innerHTML = itemToUpdateCost * itemToUpdateCount;
 }
 
+// Función callback que quita el ítem del carrito asociado al botón.
+// Obtener el ID del ítem de la misma forma que la función anterior y usarlo para encontrar
+// el ítem en la lista del carrito, quitarlo y mostrar la lista de nuevo.
 function removeItemFromCart(event) {
     let parentTrElement = event.target.closest("tr");
     let itemToRemoveId = parseInt(parentTrElement.id.replace("item-", ""));
@@ -66,6 +78,7 @@ function removeItemFromCart(event) {
     }
 }
 
+// Quitar ítems duplicados de la lista del carrito.
 function removeCartDuplicates(array) {
     let uniqueIds = [];
 
@@ -80,6 +93,7 @@ function removeCartDuplicates(array) {
 
 }
 
+// Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
     // Mostrar nombre de usuario en la barra de navegación.
     navbarShowUsername();
@@ -87,6 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Agregar event listener al botón de cerrar sesión.
     document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
 
+    // Solicitar la lista remota del carrito, concatenarla con la lista local,
+    // quitar ítems duplicados si los hay, actualizar la lista local con esta lista nueva
+    // y por último mostrarla en la página.
     getJSONData(CART_INFO_URL + 25801 + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
 
