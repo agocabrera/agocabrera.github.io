@@ -10,24 +10,24 @@ function showCartItems(array) {
     for (let i = 0; i < array.length; i++) {
         let item = array[i];
         document.getElementById("cart-items").innerHTML +=
-            `<tr id="item-${item.id}">
+            `<tr>
                 <td><img src="${item.image}" onclick="setId('product', ${item.id})"></td>
                 <td>${item.name}</td>
-                <td>${item.currency} <span class="item-cost">${item.unitCost}</span></td>
+                <td>${item.currency} ${item.unitCost}</td>
                 <td>
                     <div class="input-group input-group-sm">
-                        <input type="number" class="form-control item-count" min="1" value="${item.count}">
+                        <input type="number" class="form-control item-count" data-product-id="${item.id}" min="1" value="${item.count}">
                     </div>
                 </td>
-                <td><strong>${item.currency} <span class="item-subtotal">${item.unitCost * item.count}</span></strong></td>
-                <td><button type="button" class="item-remove"><span class="fa fa-trash"></span></button></td>
+                <td><strong>${item.currency} ${item.unitCost * item.count}</strong></td>
+                <td><button type="button" class="item-remove" data-product-id="${item.id}"><span class="fa fa-trash"></span></button></td>
             </tr>`;
     }
 
     let countClassCollection = document.getElementsByClassName("item-count");
     for (let i = 0; i < countClassCollection.length; i++) {
         let inputElement = countClassCollection[i];
-        inputElement.addEventListener("input", setNewSubtotal, false);
+        inputElement.addEventListener("input", setNewCount, false);
     }
 
     let removeClassCollection = document.getElementsByClassName("item-remove");
@@ -37,45 +37,29 @@ function showCartItems(array) {
     }
 }
 
-// Función callback que calcula el nuevo subtotal del item en el carrito.
-// "Ir hacia atrás" desde el target del evento (el <input> con la cantidad), hasta encontrarse con 
-// el <tr> asociado al ítem, obtener el ID del ítem a partir del <tr>, obtener el precio unitario y 
-// la cantidad del ítem buscándolos por sus clases y por último actualizar la lista del carrito con
-// la cantidad nueva y el subtotal que muestra la página.
-function setNewSubtotal(event) {
-    let parentTrElement = event.target.closest("tr");
-    let itemToUpdateId = parseInt(parentTrElement.id.replace("item-", ""));
-    let itemToUpdateCount = parseInt(parentTrElement.querySelector(".item-count").value);
-    let itemToUpdateCost = parseInt(parentTrElement.querySelector(".item-cost").innerHTML);
+// Función callback que actualiza la cantidad del ítem en el carrito.
+// Obtiene el ID del ítem a partir del dataset del target del evento, usa ese
+// ID para encontrar el ítem en la lista del carrito y actualiza su cantidad.
+function setNewCount(event) {
+    let itemToUpdateId = parseInt(event.target.dataset.productId);
+    let itemToUpdate = cartItems.find((item) => { return item.id === itemToUpdateId });
+    let itemToUpdateNewCount = parseInt(event.target.value);
 
-    for (let i = 0; i < cartItems.length; i++) {
-        let item = cartItems[i];
-        if (item.id === itemToUpdateId) {
-            item.count = itemToUpdateCount;
-            localStorage.setItem("cart", JSON.stringify(cartItems));
-            showCartItems(cartItems);
-            break;
-        }
-    }
-
-    parentTrElement.querySelector(".item-subtotal").innerHTML = itemToUpdateCost * itemToUpdateCount;
+    itemToUpdate.count = itemToUpdateNewCount;
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    showCartItems(cartItems);
 }
 
 // Función callback que quita el ítem del carrito asociado al botón.
-// Obtener el ID del ítem de la misma forma que la función anterior y usarlo para encontrar
-// el ítem en la lista del carrito, quitarlo y mostrar la lista de nuevo.
+// Obtiene el ID del ítem a partir del dataset del target del evento, usa ese 
+// ID para encontrar el ítem en la lista del carrito y quitarlo.
 function removeItemFromCart(event) {
-    let parentTrElement = event.target.closest("tr");
-    let itemToRemoveId = parseInt(parentTrElement.id.replace("item-", ""));
-    for (let i = 0; i < cartItems.length; i++) {
-        let item = cartItems[i];
-        if (item.id === itemToRemoveId) {
-            cartItems.splice(i, 1);
-            localStorage.setItem("cart", JSON.stringify(cartItems));
-            showCartItems(cartItems);
-            break;
-        }
-    }
+    let itemToRemoveId = parseInt(event.target.dataset.productId);
+    let itemToRemoveIndex = cartItems.findIndex((item) => { return item.id === itemToRemoveId });
+
+    cartItems.splice(itemToRemoveIndex, 1);
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    showCartItems(cartItems);
 }
 
 // Quitar ítems duplicados de la lista del carrito.
