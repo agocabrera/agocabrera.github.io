@@ -195,42 +195,93 @@ a.custom-card:hover {
   color: #fdd610;
 }
 
-#comments-list > div {
+#comments-list>div {
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-#pro-related > div {
+#pro-related>div {
   border: 1px solid rgba(0, 0, 0, 0.125);
   width: 48%;
   cursor: pointer;
 }
 
-#pro-related > div:hover {
+#pro-related>div:hover {
   background-color: #f8f9fa
 }
 
-#cart-items img {
-  height: 50px;
-  cursor: pointer;
+/* -------------------------------------- */
+
+table.cart-table {
+  table-layout: fixed;
 }
 
-#cart-items td {
+.cart-table td,
+.cart-table th {
   vertical-align: middle;
 }
 
+th.name-h,
+th.count-h {
+  min-width: 5em;
+}
+
+th.cost-h,
+th.subtotal-h {
+  min-width: 4em;
+}
+
+th.remove-h {
+  width: 2.5em;
+}
+
+td input::-webkit-outer-spin-button,
+td input::-webkit-inner-spin-button {
+  display: none;
+}
+
 #cart-items input {
-  max-width: 60px;
+  min-width: 4.5em;
+  max-width: 4.5em;
+  text-align: center;
+}
+
+#cart-items img {
+  width: 70px;
+  cursor: pointer;
 }
 
 #cart-items button {
   border: 0px;
-  background-color: inherit;
+  background-color: transparent;
 }
 
-#cart-items span {
+#cart-items .item-remove span {
   pointer-events: none;
+  color: rgb(220, 53, 69);
 }
 
-#shipping-number {
-  max-width: 100px;
+@media (max-width: 576px) {
+  table {
+    font-size: 0.75rem;
+  }
+
+  #cart-items input {
+    font-size: 0.75rem;
+  }
+
+  #cart-items img {
+    width: 60px;
+  }
+}
+
+.shipping {
+  max-width: 25em;
+}
+
+.number-font {
+  font-family: "Roboto", monospace;
+}
+
+#purchase-success {
+  z-index: 1;
 }

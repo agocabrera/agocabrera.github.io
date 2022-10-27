@@ -16,12 +16,12 @@ function showProductInfo(object) {
             <h1 class="fs-1 mb-0">${object.name}</h1>
             <span class="fw-bold fs-4">${object.currency} ${object.cost}</span>
             <p>${object.description}</p>
-            <button type="button" class="btn btn-success" id="buy">Comprar</button>
+            <button type="button" class="btn btn-success" id="add-to-cart">Comprar</button>
         </div>`;
 
     // Agregar event listener al botón de comprar, al presionarlo crear un objeto nuevo
     // con la información del producto y agregarlo al carrito en el almacenamiento local.
-    document.getElementById("buy").addEventListener("click", function () {
+    document.getElementById("add-to-cart").addEventListener("click", function () {
         let newCartItem = {};
         newCartItem.id = product.id;
         newCartItem.name = product.name;
@@ -32,14 +32,14 @@ function showProductInfo(object) {
 
         cartItems.push(newCartItem);
         localStorage.setItem("cart", JSON.stringify(cartItems));
-        document.getElementById("buy").classList.add("disabled");
+        document.getElementById("add-to-cart").classList.add("disabled");
     }, false);
 
     // Desactivar el botón de comprar si el producto ya se encuentra en el carrito.
     for (let i = 0; i < cartItems.length; i++) {
         let item = cartItems[i];
         if (item.id === product.id) {
-            document.getElementById("buy").classList.add("disabled");
+            document.getElementById("add-to-cart").classList.add("disabled");
             break;
         }
     }

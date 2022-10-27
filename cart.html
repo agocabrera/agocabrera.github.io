@@ -6,12 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,700,900" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
 </head>
 
 <body>
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
     <div class="container">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -43,63 +45,132 @@
       </div>
     </div>
   </nav>
+
   <main>
+
     <div class="container">
-      <div class="row mt-4">
-        <div class="col-2">
-        </div>
-        <div class="col-8">
-          <h1 class="text-center mb-4">Carrito</h1>
-          <table class="table">
+
+      <div class="row">
+
+        <div class="col mt-4">
+          <h1 class="text-center mb-3">Carrito</h1>
+
+          <table class="table cart-table">
             <thead>
               <tr>
                 <th scope="col"></th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Costo</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Subtotal</th>
-                <th scope="col"></th>
+                <th class="name-h" scope="col">Nombre</th>
+                <th class="cost-h" scope="col">Costo</th>
+                <th class="count-h" scope="col">Cantidad</th>
+                <th class="subtotal-h" scope="col">Subtotal</th>
+                <th class="remove-h" scope="col"></th>
               </tr>
             </thead>
             <tbody id="cart-items">
             </tbody>
           </table>
+
         </div>
+
       </div>
-      <div class="row mt-4">
-        <div class="col-6">
-          <h2 class="mb-4">Dirección de envío</h2>
-          <div class="input-group mb-2">
+
+      <div class="row row-cols-1">
+
+        <form class="col mt-5" id="address-form" novalidate>
+
+          <h2 class="mb-3">Dirección de envío</h2>
+
+          <div class="input-group shipping mb-2">
             <span class="input-group-text">Calle</span>
-            <input type="text" class="form-control" id="shipping-street">
+            <input type="text" name="shipping-main-street" class="form-control" id="shipping-main-street" required>
+            <div class="invalid-feedback">Ingrese calle.</div>
+          </div>
+
+          <div class="input-group shipping mb-2">
             <span class="input-group-text">Número</span>
-            <input type="text" class="form-control" id="shipping-number">
+            <input type="text" name="shipping-door-number" class="form-control" id="shipping-door-number" required>
+            <div class="invalid-feedback">Ingrese número de puerta.</div>
           </div>
-          <div class="input-group">
+
+          <div class="input-group shipping">
             <span class="input-group-text">Esquina</span>
-            <input type="text" class="form-control" id="shipping-cross">
+            <input type="text" name="shipping-corner-street" class="form-control" id="shipping-corner-street" required>
+            <div class="invalid-feedback">Ingrese esquina.</div>
           </div>
-        </div>
-        <div class="col">
-        </div>
-        <div class="col-4">
-          <h2 class="mb-4">Tipo de envío</h2>
+
+        </form>
+
+        <div class="col mt-5" id="shipping-method">
+          <h2 class="mb-3">Tipo de envío</h2>
           <div class="form-check">
-            <input type="radio" class="form-check-input" name="shipping" value="1" id="shipping-premium">
+            <input type="radio" class="form-check-input" name="shipping-method" value="3" id="shipping-premium"
+              required>
             <label for="shipping-premium" class="form-check-label">Premium: 2 a 5 días (15%)</label>
           </div>
           <div class="form-check">
-            <input type="radio" class="form-check-input" name="shipping" value="2" id="shipping-express">
+            <input type="radio" class="form-check-input" name="shipping-method" value="2" id="shipping-express">
             <label for="shipping-express" class="form-check-label">Express: 5 a 8 días (7%)</label>
           </div>
           <div class="form-check">
-            <input type="radio" class="form-check-input" name="shipping" value="3" id="shipping-standard" checked>
+            <input type="radio" class="form-check-input" name="shipping-method" value="1" id="shipping-standard">
             <label for="shipping-standard" class="form-check-label">Standard: 12 a 15 días (5%)</label>
           </div>
         </div>
+
+        <div class="col mt-5">
+          <h2 class="mb-3">Costos</h2>
+
+          <div class="list-group">
+
+            <div class="list-group-item bg-light d-flex">
+              <div class="w-50">
+                <h5 class="mb-1">Subtotal</h5>
+                <small class="text-muted">Costo unitario del producto por cantidad.</small>
+              </div>
+              <div class="w-50 d-flex align-items-center justify-content-end">
+                <div class="number-font" id="subtotal-cost">─</div>
+              </div>
+            </div>
+
+            <div class="list-group-item bg-light d-flex">
+              <div class="w-50">
+                <h5 class="mb-1">Costo de envío</h5>
+                <small class="text-muted">Según el tipo de envío.</small>
+              </div>
+              <div class="w-50 d-flex align-items-center justify-content-end">
+                <div class="number-font" id="shipping-cost">─</div>
+              </div>
+            </div>
+
+            <div class="list-group-item bg-light d-flex">
+              <div class="w-50">
+                <h5 class="mb-1">Total</h5>
+                <small class="text-muted">Total a pagar.</small>
+              </div>
+              <div class="w-50 d-flex align-items-center justify-content-end">
+                <div class="fw-bold number-font" id="total-cost">─</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col mt-5">
+          <h2 class="mb-3">Forma de pago</h2>
+          <p id="payment-method-display">Seleccione una forma de pago.</p>
+          <a data-bs-toggle="modal" href="#payment-modal" role="button">Seleccionar</a>
+        </div>
+
+        <button type="submit" form="address-form" class="btn btn-primary btn-lg mt-5">Finalizar
+          compra</button>
+
       </div>
+
     </div>
+
   </main>
+
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
@@ -110,6 +181,7 @@
       <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
     </div>
   </footer>
+
   <div id="spinner-wrapper">
     <div class="lds-ring">
       <div></div>
@@ -118,9 +190,76 @@
       <div></div>
     </div>
   </div>
+
+  <div class="modal fade" id="payment-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h2 class="modal-title fs-5">Forma de pago</h2>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="form-check mb-2">
+            <input type="radio" class="form-check-input" name="payment-method-input" value="1" id="payment-card">
+            <label for="payment-card" class="form-check-label">Tarjeta de crédito</label>
+          </div>
+
+          <form class="row row-cols-2" id="card-form" novalidate>
+            <div class="col mb-2">
+              <label for="payment-card-number" class="form-label">Número de tarjeta</label>
+              <input type="text" name="payment-card-number" class="form-control" id="payment-card-number" required>
+              <div class="invalid-feedback">Ingrese número de tarjeta.</div>
+            </div>
+
+            <div class="col mb-2">
+              <label for="payment-card-code" class="form-label">Código de seg.</label>
+              <input type="text" name="payment-card-code" class="form-control" id="payment-card-code" required>
+              <div class="invalid-feedback">Ingrese código de seguridad.</div>
+            </div>
+
+            <div class="col mb-2">
+              <label for="payment-card-expiration" class="form-label">Vencimiento (MM/AA)</label>
+              <input type="text" name="payment-card-expiration" class="form-control" id="payment-card-expiration"
+                required>
+              <div class="invalid-feedback">Ingrese fecha de vencimiento.</div>
+            </div>
+          </form>
+
+          <div class="form-check mt-5 mb-2">
+            <input type="radio" class="form-check-input" name="payment-method-input" value="2" id="payment-bank">
+            <label for="payment-bank" class="form-check-label">Transferencia bancaria</label>
+          </div>
+
+          <form class="row row-cols-2" id="bank-form" novalidate>
+            <div class="col mb-2">
+              <label for="payment-bank-number" class="form-label">Número de cuenta</label>
+              <input type="text" name="payment-bank-number" class="form-control" id="payment-bank-number" required>
+              <div class="invalid-feedback">Ingrese número de cuenta.</div>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-success alert-dismissible d-none" id="purchase-success" role="alert">
+    <div class="text-center">¡Has comprado con éxito!</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="close-alert"></button>
+  </div>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/cart.js"></script>
+
 </body>
 
 </html>
