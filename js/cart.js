@@ -51,13 +51,12 @@ function calcShippingCost(subtotal) {
 }
 
 // Actualizar el subtotal, costo de envío y total en la página.
-function updateTotal() {
+function showShippingAndTotalCost() {
     let subtotal = calcSubtotalCost(cartItems);
     let shippingCost = calcShippingCost(subtotal);
     let total = subtotal + shippingCost;
 
     if (subtotal !== 0 && shippingCost !== 0) {
-        document.getElementById("subtotal-cost").innerHTML = subtotal.toLocaleString("es-UY", { style: "currency", currency: "USD" });
         document.getElementById("shipping-cost").innerHTML = shippingCost.toLocaleString("es-UY", { style: "currency", currency: "USD" });
         document.getElementById("total-cost").innerHTML = total.toLocaleString("es-UY", { style: "currency", currency: "USD" });
     }
@@ -99,7 +98,8 @@ function showCartItems(array) {
         buttonElement.addEventListener("click", removeItemFromCart, false);
     }
 
-    updateTotal();
+    document.getElementById("subtotal-cost").innerHTML = calcSubtotalCost(array).toLocaleString("es-UY", { style: "currency", currency: "USD" });
+    showShippingAndTotalCost();
 
 }
 
@@ -283,9 +283,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Actualizar costo de envío al cambiar tipo de envío.
-    document.getElementById("shipping-premium").addEventListener("change", updateTotal, false);
-    document.getElementById("shipping-express").addEventListener("change", updateTotal, false);
-    document.getElementById("shipping-standard").addEventListener("change", updateTotal, false);
+    document.getElementById("shipping-premium").addEventListener("change", showShippingAndTotalCost, false);
+    document.getElementById("shipping-express").addEventListener("change", showShippingAndTotalCost, false);
+    document.getElementById("shipping-standard").addEventListener("change", showShippingAndTotalCost, false);
 
     // Al seleccionar una forma de pago, llamar a la función que se 
     // encarga de desactivar la otra y del feedback.
