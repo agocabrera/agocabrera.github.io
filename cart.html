@@ -210,20 +210,21 @@
           <form class="row row-cols-2" id="card-form" novalidate>
             <div class="col mb-2">
               <label for="payment-card-number" class="form-label">Número de tarjeta</label>
-              <input type="text" name="payment-card-number" class="form-control" id="payment-card-number" required>
+              <input type="text" name="payment-card-number" class="form-control" id="payment-card-number" required
+                disabled>
               <div class="invalid-feedback">Ingrese número de tarjeta.</div>
             </div>
 
             <div class="col mb-2">
               <label for="payment-card-code" class="form-label">Código de seg.</label>
-              <input type="text" name="payment-card-code" class="form-control" id="payment-card-code" required>
+              <input type="text" name="payment-card-code" class="form-control" id="payment-card-code" required disabled>
               <div class="invalid-feedback">Ingrese código de seguridad.</div>
             </div>
 
             <div class="col mb-2">
               <label for="payment-card-expiration" class="form-label">Vencimiento (MM/AA)</label>
               <input type="text" name="payment-card-expiration" class="form-control" id="payment-card-expiration"
-                required>
+                required disabled>
               <div class="invalid-feedback">Ingrese fecha de vencimiento.</div>
             </div>
           </form>
@@ -236,7 +237,8 @@
           <form class="row row-cols-2" id="bank-form" novalidate>
             <div class="col mb-2">
               <label for="payment-bank-number" class="form-label">Número de cuenta</label>
-              <input type="text" name="payment-bank-number" class="form-control" id="payment-bank-number" required>
+              <input type="text" name="payment-bank-number" class="form-control" id="payment-bank-number" required
+                disabled>
               <div class="invalid-feedback">Ingrese número de cuenta.</div>
             </div>
           </form>

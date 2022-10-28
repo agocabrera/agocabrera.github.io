@@ -1,8 +1,8 @@
 // Lista que contiene los ítems del carrito.
 let cartItems = [];
 
-// Booleano que cambia cuando la página pasa por el
-// proceso de validación por primera vez.
+// Booleano que cambia una vez que la página pasa 
+// por el proceso de verificación de validez.
 let inputsVerified = false;
 
 // Calcular el subtotal general a partir de la lista del carrito.
@@ -65,8 +65,8 @@ function updateTotal() {
 }
 
 // Mostrar los ítems del carrito en la página.
-// Agregar un event listener a cada <input> que tiene la cantidad de ese ítem
-// y también a cada <button> que quita ese ítem del carrito.
+// Agregar un event listener a cada <input> que tiene la cantidad de 
+// ese ítem y también a cada <button> que quita ese ítem del carrito.
 function showCartItems(array) {
     document.getElementById("cart-items").innerHTML = "";
 
@@ -149,12 +149,62 @@ function removeCartDuplicates(array) {
 
 }
 
-// Deshabilitar los inputs de la forma de pago que no está seleccionada, dar
-// feedback si el formulario no fue válido al intentar enviarse la primera vez
-// y devolver verdadero o falso según la validez de la información de pago.
-// Puede que haya que modularizar esta función un poco más.
-function validatePaymentInfo() {
-    console.log("validatePaymentInfo")
+// Revisar si algún input de texto anidado en el elemento  
+// recibido como argumento está vacío.
+function textInputsEmpty(form) {
+    for (input of form.querySelectorAll("input")) {
+        if (input.type === "text" && input.value === "") {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Verificar que todos los inputs de la página sean válidos.
+function verifyAllInputs() {
+    inputsVerified = true;
+
+    // Input de cantidad de cada ítem del carrito.
+    for (input of document.getElementsByClassName("item-count")) {
+        let count = parseInt(input.value);
+        if (Number.isNaN(count) || count < 1) {
+            return false;
+        }
+    }
+
+    // Inputs de la dirección de envío.
+    if (textInputsEmpty(document.getElementById("address-form"))) {
+        return false;
+    }
+
+    // Inputs del tipo de envío.
+    if (document.querySelector("input[name=shipping-method]:checked") === null) {
+        return false;
+    }
+
+    // Inputs de forma de pago.
+    let paymentMethodInput = document.querySelector("input[name=payment-method-input]:checked");
+    if (paymentMethodInput === null) {
+        return false;
+
+    } else if (paymentMethodInput.value === "1") {
+        if (textInputsEmpty(document.getElementById("card-form"))) {
+            return false;
+        }
+
+    } else if (paymentMethodInput.value === "2") {
+        if (textInputsEmpty(document.getElementById("bank-form"))) {
+            return false;
+        }
+    }
+
+    return true;
+
+}
+
+// Deshabilitar los inputs de la forma de pago que no está seleccionada y dar
+// feedback si el formulario no fue válido al intentar enviarse una vez.
+function paymentMethodFeedback() {
     let paymentMethodInput = document.querySelector("input[name=payment-method-input]:checked");
     let paymentMethodDisplay = document.getElementById("payment-method-display");
     let cardForm = document.getElementById("card-form");
@@ -164,7 +214,7 @@ function validatePaymentInfo() {
 
     if (paymentMethodInput === null) {
         paymentMethodDisplay.classList.add("text-danger");
-        return false;
+        return;
     } else if (paymentMethodInput.value === "1") {
         disabledForm = bankForm;
         enabledForm = cardForm;
@@ -175,19 +225,20 @@ function validatePaymentInfo() {
 
     for (input of disabledForm.querySelectorAll("input")) {
         input.setAttribute("disabled", "");
-        input.removeEventListener("input", validatePaymentInfo, false);
+        input.removeEventListener("input", paymentMethodFeedback, false);
     }
 
     for (input of enabledForm.querySelectorAll("input")) {
         input.removeAttribute("disabled");
-        input.addEventListener("input", validatePaymentInfo, false);
+        input.addEventListener("input", paymentMethodFeedback, false);
     }
 
+    // Dar feedback si se intentó finalizar la compra previamente.
     if (inputsVerified) {
         disabledForm.classList.remove("was-validated");
         enabledForm.classList.add("was-validated");
 
-        if (enabledForm.checkValidity()) {
+        if (!textInputsEmpty(enabledForm)) {
             paymentMethodDisplay.classList.remove("text-danger");
             paymentMethodDisplay.classList.add("text-success");
         } else {
@@ -196,8 +247,6 @@ function validatePaymentInfo() {
         }
 
     }
-
-    return enabledForm.checkValidity();
 
 }
 
@@ -238,50 +287,26 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("shipping-express").addEventListener("change", updateTotal, false);
     document.getElementById("shipping-standard").addEventListener("change", updateTotal, false);
 
-    // Al seleccionar una forma de pago, llamar a la función pertinente.
-    document.getElementById("payment-card").addEventListener("change", validatePaymentInfo, false);
-    document.getElementById("payment-bank").addEventListener("change", validatePaymentInfo, false);
+    // Al seleccionar una forma de pago, llamar a la función que se 
+    // encarga de desactivar la otra y del feedback.
+    document.getElementById("payment-card").addEventListener("change", paymentMethodFeedback, false);
+    document.getElementById("payment-bank").addEventListener("change", paymentMethodFeedback, false);
 
-    // Cuando el formulario de dirección de envío se intenta enviar, hacer lo que sigue...
+    // Cuando el formulario de dirección de envío se intenta enviar...
     document.getElementById("address-form").addEventListener("submit", function (event) {
-
-        let inputsAreValid = true;
 
         event.preventDefault();
         event.stopPropagation();
 
-        // Verificar la validez de los inputs de cantidad del carrito.
-        for (element of document.getElementsByClassName("item-count")) {
-            if (!element.checkValidity()) {
-                inputsAreValid = false;
-                break;
-            }
-        }
-
-        // Verificar que se hayan ingresado todos los datos de la dirección de envío.
-        if (!(document.getElementById("shipping-main-street").checkValidity() &&
-            document.getElementById("shipping-door-number").checkValidity() &&
-            document.getElementById("shipping-corner-street").checkValidity())) {
-
-            inputsAreValid = false;
-        }
-
-        // Verificar que un tipo de envío haya sido seleccionado.
-        // Alcanza con verificar sólo uno de los input tipo radio.
-        if (!document.querySelector("input[name=shipping-method]").checkValidity()) {
-            inputsAreValid = false;
-        }
-
-        inputsVerified = true;
-
         // Si al menos un input no es válido, agregar la clase de Bootstrap "was-validated" a
         // los elementos que contengan los inputs evaluados, sino mostrar la alerta de éxito.
-        if (validatePaymentInfo() && inputsAreValid) {
+        if (verifyAllInputs()) {
             document.getElementById("purchase-success").classList.remove("d-none");
         } else {
             document.getElementById("cart-items").classList.add("was-validated");
             document.getElementById("address-form").classList.add("was-validated");
             document.getElementById("shipping-method").classList.add("was-validated");
+            paymentMethodFeedback()
         }
 
     }, false);
