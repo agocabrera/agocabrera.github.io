@@ -30,34 +30,28 @@ function calcSubtotalCost(array) {
 // el tipo de envío seleccionado.
 function calcShippingCost(subtotal) {
     let shippingMethod = document.querySelector("input[name=shipping-method]:checked");
-    let shippingFee = 0;
 
-    if (shippingMethod !== null) {
-
-        if (shippingMethod.value === "3") {
-            shippingFee = 0.15;
-        } else if (shippingMethod.value === "2") {
-            shippingFee = 0.07;
-        } else if (shippingMethod.value === "1") {
-            shippingFee = 0.05;
-        }
-
-    } else {
-        return 0;
+    if (shippingMethod === null) {
+        return "Seleccione tipo de envío.";
+    } else if (shippingMethod.value === "3") {
+        return subtotal * 0.15;
+    } else if (shippingMethod.value === "2") {
+        return subtotal * 0.07;
+    } else if (shippingMethod.value === "1") {
+        return subtotal * 0.05;
     }
-
-    return subtotal * shippingFee;
 
 }
 
-// Actualizar el subtotal, costo de envío y total en la página.
+// Actualizar el costo de envío y total en la página.
 function showShippingAndTotalCost() {
     let subtotal = calcSubtotalCost(cartItems);
     let shippingCost = calcShippingCost(subtotal);
     let total = subtotal + shippingCost;
 
-    if (subtotal !== 0 && shippingCost !== 0) {
-        document.getElementById("shipping-cost").innerHTML = shippingCost.toLocaleString("es-UY", { style: "currency", currency: "USD" });
+    document.getElementById("shipping-cost").innerHTML = shippingCost.toLocaleString("es-UY", { style: "currency", currency: "USD" });
+
+    if (typeof total === "number") {
         document.getElementById("total-cost").innerHTML = total.toLocaleString("es-UY", { style: "currency", currency: "USD" });
     }
 
@@ -216,18 +210,23 @@ function paymentMethodFeedback() {
         paymentMethodDisplay.classList.add("text-danger");
         return;
     } else if (paymentMethodInput.value === "1") {
+        paymentMethodDisplay.innerHTML = "Tarjeta de crédito.";
         disabledForm = bankForm;
         enabledForm = cardForm;
     } else if (paymentMethodInput.value === "2") {
+        paymentMethodDisplay.innerHTML = "Transferencia bancaria.";
         disabledForm = cardForm;
         enabledForm = bankForm;
     }
 
+    // Deshabilitar los inputs para la forma de pago no seleccionada y
+    // quitarle los event listeners.
     for (input of disabledForm.querySelectorAll("input")) {
         input.setAttribute("disabled", "");
         input.removeEventListener("input", paymentMethodFeedback, false);
     }
 
+    // Hacer lo opuesto para la forma de pago seleccionada.
     for (input of enabledForm.querySelectorAll("input")) {
         input.removeAttribute("disabled");
         input.addEventListener("input", paymentMethodFeedback, false);
