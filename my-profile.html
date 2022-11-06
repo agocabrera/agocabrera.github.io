@@ -44,27 +44,82 @@
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbar-user-dropdown" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbar-user-dropdown">
-              <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
-              <li><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
-              <li><a class="dropdown-item" href="#" id="navbar-logout">Cerrar sesión</a></li>
-            </ul>
+          <li class="nav-item" id="navbar-user">
           </li>
         </ul>
       </div>
     </div>
   </nav>
+
   <main>
+
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+
+      <div class="row mt-4">
+
+        <div class="col">
+          <h1 class="d-inline">Perfil</h1>
+          <img src="img/img_perfil.png" alt="Imagen de perfil" class="d-inline float-end" id="profile-picture">
+        </div>
+
       </div>
+
+      <div class="row row-cols-1 row-cols-lg-2 mt-3">
+
+        <div class="col mb-3 needs-validation">
+          <label class="form-label" for="name">Primer nombre</label>
+          <div class="d-inline float-end form-text">Requerido.</div>
+          <input class="form-control" type="text" id="name" required>
+          <div class="invalid-feedback">Nombre no puede estar vacío.</div>
+          <div class="valid-feedback">OK.</div>
+        </div>
+        <div class="col mb-3 needs-validation">
+          <label class="form-label" for="second-name">Segundo nombre</label>
+          <input class="form-control" type="text" id="second-name">
+          <div class="valid-feedback">OK.</div>
+        </div>
+        <div class="col mb-3 needs-validation">
+          <label class="form-label" for="surname">Primer apellido</label>
+          <div class="d-inline float-end form-text">Requerido.</div>
+          <input class="form-control" type="text" id="surname" required>
+          <div class="invalid-feedback">Apellido no puede estar vacío.</div>
+          <div class="valid-feedback">OK.</div>
+        </div>
+        <div class="col mb-3 needs-validation">
+          <label class="form-label" for="second-surname">Segundo apellido</label>
+          <input class="form-control" type="text" id="second-surname">
+          <div class="valid-feedback">OK.</div>
+        </div>
+        <div class="col mb-3 needs-validation">
+          <label class="form-label" for="email">E-mail</label>
+          <div class="d-inline float-end form-text">Requerido.</div>
+          <input class="form-control" type="email" id="email" required>
+          <div class="invalid-feedback">Ingrese email válido.</div>
+          <div class="valid-feedback">OK.</div>
+        </div>
+        <div class="col mb-3 needs-validation">
+          <label class="form-label" for="phone-number">Teléfono de contacto</label>
+          <input class="form-control" type="tel" id="phone-number">
+          <div class="valid-feedback">OK.</div>
+        </div>
+        <div class="col mb-3">
+          <label class="form-label" for="picture-input">Imagen de perfil</label>
+          <input class="form-control" type="file" accept="image/png, image/jpeg" id="picture-input">
+          <div class="text-danger mt-2 d-none" id="picture-error">Debe seleccionar una imagen tipo PNG o JPEG.</div>
+        </div>
+
+      </div>
+
+      <div class="row mt-5">
+        <div class="col">
+          <button class="btn btn-primary" id="save-changes">Guardar cambios</button>
+        </div>
+      </div>
+
     </div>
+
   </main>
+
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
@@ -75,9 +130,26 @@
       <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
     </div>
   </footer>
+
+  <div class="modal fade" id="please-login-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>Debe iniciar sesión para ver su perfil.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="please-login-button">Iniciar
+            sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/my-profile.js"></script>
+
 </body>
 
 </html>

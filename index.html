@@ -17,31 +17,44 @@
 
 <body>
   <main class="mt-5 text-center">
-    <img src="img/login.png" alt="Logo" width="600">
-    <div class="container signin">
-      <h1 class="h3">Inicio de sesión</h1>
-      <div id="g_id_onload" data-client_id="797839961033-8uf7cm8mfs4sac1e7pn4msv54l4lvhlh.apps.googleusercontent.com"
-        data-callback="handleCredentialResponse" data-auto_prompt="false">
-      </div>
-      <div class="g_id_signin mt-3 mb-3" data-type="standard" data-size="large" data-theme="outline"
-        data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left" data-width=300>
-      </div>
+
+    <div class="container">
       <div class="row">
-        <hr class="col m-auto">
-        <strong class="col-auto">o</strong>
-        <hr class="col m-auto">
+        <div class="col">
+          <img src="img/login.png" alt="Logo" class="img-fluid">
+          <div class="signin">
+            <h1 class="h3">Inicio de sesión</h1>
+            <div class="d-flex justify-content-center">
+              <div id="g_id_onload"
+                data-client_id="797839961033-8uf7cm8mfs4sac1e7pn4msv54l4lvhlh.apps.googleusercontent.com"
+                data-callback="handleCredentialResponse" data-auto_prompt="false">
+              </div>
+              <div class="g_id_signin mt-3 mb-3" data-type="standard" data-size="large" data-theme="outline"
+                data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left" data-width="300"
+                data-locale="es_UY">
+              </div>
+            </div>
+            <div class="row">
+              <hr class="col m-auto">
+              <strong class="col-auto">o</strong>
+              <hr class="col m-auto">
+            </div>
+            <div class="form-floating mt-3 mb-3">
+              <input type="email" class="form-control" id="email" placeholder="Ingrese email" required>
+              <label for="email">Email</label>
+            </div>
+            <div class="form-floating mt-3 mb-3">
+              <input type="password" class="form-control" id="password" placeholder="Ingrese contraseña" required>
+              <label for="password">Contraseña</label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" id="submit">Ingresar</button>
+          </div>
+        </div>
       </div>
-      <div class="form-floating mt-3 mb-3">
-        <input type="email" class="form-control" id="email" placeholder="Ingrese email">
-        <label for="email">Email</label>
-      </div>
-      <div class="form-floating mt-3 mb-3">
-        <input type="password" class="form-control" id="password" placeholder="Ingrese contraseña">
-        <label for="password">Contraseña</label>
-      </div>
-      <button class="w-100 btn btn-lg btn-primary" id="submit">Ingresar</button>
     </div>
+
   </main>
+
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
@@ -52,15 +65,21 @@
       <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
     </div>
   </footer>
-  <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-    <div class="modal-dialog" role="document">
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="error-modal">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          <p id="modal-body"></p>
+          <div>Por favor ingrese:</div>
+          <ul id="error-modal-body"></ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
   </div>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="js/index.js"></script>

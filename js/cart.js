@@ -1,5 +1,6 @@
-// Lista que contiene los ítems del carrito.
-let cartItems = [];
+// Objeto con los datos del usuario que inició sesión,
+// incluyendo el contenido de su carrito.
+let activeUser = {};
 
 // Booleano que cambia una vez que la página pasa 
 // por el proceso de verificación de validez.
@@ -45,7 +46,7 @@ function calcShippingCost(subtotal) {
 
 // Actualizar el costo de envío y total en la página.
 function showShippingAndTotalCost() {
-    let subtotal = calcSubtotalCost(cartItems);
+    let subtotal = calcSubtotalCost(activeUser.cart);
     let shippingCost = calcShippingCost(subtotal);
     let total = subtotal + shippingCost;
 
@@ -103,13 +104,13 @@ function showCartItems(array) {
 // siempre y cuando sea un número válido.
 function updateCount(event) {
     let itemToUpdateId = parseInt(event.target.dataset.productId);
-    let itemToUpdate = cartItems.find((item) => { return item.id === itemToUpdateId });
+    let itemToUpdate = activeUser.cart.find((item) => { return item.id === itemToUpdateId });
     let newCount = parseInt(event.target.value);
 
     if (!(Number.isNaN(newCount) || newCount < 1)) {
         itemToUpdate.count = newCount;
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-        showCartItems(cartItems);
+        localStorage.setItem("user-" + activeUser.email, JSON.stringify(activeUser));
+        showCartItems(activeUser.cart);
     } else {
         event.target.value = itemToUpdate.count;
     }
@@ -121,11 +122,11 @@ function updateCount(event) {
 // ID para encontrar el ítem en la lista del carrito y quitarlo.
 function removeItemFromCart(event) {
     let itemToRemoveId = parseInt(event.target.dataset.productId);
-    let itemToRemoveIndex = cartItems.findIndex((item) => { return item.id === itemToRemoveId });
+    let itemToRemoveIndex = activeUser.cart.findIndex((item) => { return item.id === itemToRemoveId });
 
-    cartItems.splice(itemToRemoveIndex, 1);
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-    showCartItems(cartItems);
+    activeUser.cart.splice(itemToRemoveIndex, 1);
+    localStorage.setItem("user-" + activeUser.email, JSON.stringify(activeUser));
+    showCartItems(activeUser.cart);
 }
 
 // Quitar ítems duplicados de la lista del carrito.
@@ -252,29 +253,22 @@ function paymentMethodFeedback() {
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Mostrar nombre de usuario en la barra de navegación.
-    navbarShowUsername();
+    // Controles del usuario en la barra de navegación.
+    userControls();
 
-    // Agregar event listener al botón de cerrar sesión.
-    document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
+    // Obtener los datos del usuario que inició sesión desde el almacenamiento local.
+    activeUser = JSON.parse(localStorage.getItem("user-" + localStorage.getItem("active-user")));
 
     // Solicitar la lista remota del carrito, concatenarla con la lista local, quitar ítems duplicados
     // si los hay, actualizar la lista local con esta lista nueva y por último mostrarla en la página.
     getJSONData(CART_INFO_URL + 25801 + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
 
-            let remoteCartItems = resultObj.data.articles;
-            let localCartItems = [];
+            activeUser.cart = activeUser.cart.concat(resultObj.data.articles);
+            activeUser.cart = removeCartDuplicates(activeUser.cart);
+            localStorage.setItem("user-" + activeUser.email, JSON.stringify(activeUser));
 
-            if (localStorage.getItem("cart") != null) {
-                localCartItems = JSON.parse(localStorage.getItem("cart"));
-            }
-
-            cartItems = localCartItems.concat(remoteCartItems);
-            cartItems = removeCartDuplicates(cartItems);
-            localStorage.setItem("cart", JSON.stringify(cartItems));
-
-            showCartItems(cartItems);
+            showCartItems(activeUser.cart);
 
         } else {
             document.getElementById("cart-items").innerHTML = "No se ha podido cargar el carrito.";

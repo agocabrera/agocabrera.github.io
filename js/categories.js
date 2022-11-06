@@ -82,11 +82,8 @@ function sortAndShowCategories(sortCriteria, categoriesArray) {
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function (e) {
-    // Mostrar nombre de usuario en la barra de navegación.
-    navbarShowUsername();
-
-    // Agregar event listener al botón de cerrar sesión.
-    document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
+    // Controles del usuario en la barra de navegación.
+    userControls();
 
     getJSONData(CATEGORIES_URL).then(function (resultObj) {
         if (resultObj.status === "ok") {

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,700,900" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
@@ -29,24 +30,19 @@
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbar-user-dropdown" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbar-user-dropdown">
-              <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
-              <li><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
-              <li><a class="dropdown-item" href="#" id="navbar-logout">Cerrar sesión</a></li>
-            </ul>
+          <li class="nav-item" id="navbar-user">
           </li>
         </ul>
       </div>
     </div>
   </nav>
   <main>
+
     <div class="container mt-4">
-      <div class="row">
-        <div class="col-7">
+
+      <div class="row row-cols-1 row-cols-lg-2">
+
+        <div class="col col-lg-7">
           <div id="pro-img-carousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner rounded-3" id="carousel-inner">
             </div>
@@ -62,19 +58,32 @@
             </div>
           </div>
         </div>
-        <div class="col" id="pro-info">
+
+        <div class="col col-lg-5" id="pro-info">
         </div>
+
       </div>
-      <div class="row mt-4">
-        <div class="col-5">
-          <h2 class="mb-4">Comentarios</h2>
+
+      <h2 class="mb-4 mt-4">Relacionados</h2>
+      <div class="row row-cols-2 justify-content-evenly justify-content-lg-start" id="pro-related">
+      </div>
+
+      <div class="row row-cols-1 row-cols-lg-2">
+
+        <div class="col">
+          <h2 class="mb-4 mt-4">Comentarios</h2>
           <div class="d-grid gap-3 mb-4" id="comments-list">
           </div>
-          <h2 class="mb-4">Comentar</h2>
+        </div>
+
+        <div class="col">
+          <h2 class="mb-4 mt-4">Comentar</h2>
           <div class="mb-4">
             <label for="comment-description">
-              <h5>Tu opinión</h5>
+              <h5 class="mb-3">Tu opinión</h5>
             </label>
+            <p class="d-none d-inline float-end text-danger" id="comment-error">Inicie sesión para enviar comentarios.
+            </p>
             <textarea name="comment-description" id="comment-description" cols="30" rows="7"
               class="form-control"></textarea>
           </div>
@@ -92,15 +101,11 @@
             <button type="button" id="comment-send" class="btn btn-primary w-auto float-end">Enviar</button>
           </div>
         </div>
-        <div class="col-2">
-        </div>
-        <div class="col-5">
-          <h2 class="mb-4">Relacionados</h2>
-          <div class="d-flex flex-wrap gap-3" id="pro-related">
-          </div>
-        </div>
+
       </div>
+
     </div>
+
   </main>
   <footer class="text-muted">
     <div class="container">

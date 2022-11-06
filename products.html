@@ -30,74 +30,66 @@
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbar-user-dropdown" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbar-user-dropdown">
-              <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
-              <li><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
-              <li><a class="dropdown-item" href="#" id="navbar-logout">Cerrar sesión</a></li>
-            </ul>
+          <li class="nav-item" id="navbar-user">
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <main class="pb-5 container">
-    <div class="text-center p-4">
-      <h2>Productos</h2>
-      <p class="lead">Verás aquí todos los productos de la categoría <strong id="pro-list-name"></strong>.</p>
+  <main class="container pb-5">
+
+    <div class="row">
+      <div class="col text-center p-4">
+        <h2>Productos</h2>
+        <p class="lead">Verás aquí todos los productos de la categoría <strong id="pro-list-name"></strong>.</p>
+      </div>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col text-end">
-          <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
-            <input type="radio" class="btn-check" name="options" id="sortCostDesc">
-            <label class="btn btn-light" for="sortCostDesc"><span class="fas fa-sort-amount-down mr-1"></span>$</label>
-            <input type="radio" class="btn-check" name="options" id="sortCostAsc">
-            <label class="btn btn-light" for="sortCostAsc"><span class="fas fa-sort-amount-up mr-1"></span>$</label>
-            <input type="radio" class="btn-check" name="options" id="sortRelDesc" checked>
-            <label class="btn btn-light" for="sortRelDesc"><span
-                class="fas fa-sort-amount-down mr-1"></span>Rel.</label>
-          </div>
+
+    <div class="row row-cols-1 row-cols-sm-2">
+      <div class="col col-sm-6 mb-2">
+        <div class="input-group">
+          <input class="form-control" type="number" placeholder="Mínimo" id="filterCostMin">
+          <input class="form-control" type="number" placeholder="Máximo" id="filterCostMax">
         </div>
       </div>
-      <div class="row">
-        <div class="col input-group rounded mb-1 ">
-          <input type="search" class="form-control rounded" placeholder="Buscar" aria-label="Search"
-            aria-describedby="search-addon" id="search">
+      <div class="col col-auto ms-auto mb-2">
+        <div class="btn-group" role="group">
+          <button class="btn btn-outline-secondary" id="filterCost">Filtrar</button>
+          <button class="btn btn-outline-secondary" id="filterClear">Limpiar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-auto">
+      <div class="col col-sm-6 mb-2">
+        <div class="input-group">
+          <input type="search" class="form-control" placeholder="Buscar" aria-label="Buscar" id="search">
           <span class="input-group-text border-0">
-            <span class="fas fa-search">
-            </span>
+            <span class="fas fa-search"></span>
           </span>
         </div>
-        <div class="col container mb-1 ">
-          <div class="row container p-0 m-0">
-            <div class="col">
-              <p class="font-weight-normal text-end my-2">Precio</p>
-            </div>
-            <div class="col">
-              <input class="form-control" type="number" placeholder="min." id="filterCostMin">
-            </div>
-            <div class="col">
-              <input class="form-control" type="number" placeholder="máx." id="filterCostMax">
-            </div>
-            <div class="col-3 p-0">
-              <div class="btn-group" role="group">
-                <button class="btn btn-light btn-block" id="filterCost">Filtrar</button>
-                <button class="btn btn-link btn-sm" id="filterClear">Limpiar</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="row">
-        <div class="list-group" id="pro-list-container">
+      <div class="col col-auto ms-auto mb-2">
+        <div class="btn-group" role="group">
+          <input type="radio" class="btn-check" name="sort-by" id="sortCostDesc">
+          <label class="btn btn-outline-secondary" for="sortCostDesc"><span
+              class="fas fa-sort-amount-down mr-1"></span>$</label>
+          <input type="radio" class="btn-check" name="sort-by" id="sortCostAsc">
+          <label class="btn btn-outline-secondary" for="sortCostAsc"><span
+              class="fas fa-sort-amount-up mr-1"></span>$</label>
+          <input type="radio" class="btn-check" name="sort-by" id="sortRelDesc" checked>
+          <label class="btn btn-outline-secondary" for="sortRelDesc"><span
+              class="fas fa-sort-amount-down mr-1"></span>Rel.</label>
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="list-group p-0" id="pro-list-container">
+      </div>
+    </div>
+
   </main>
   <footer class="text-muted">
     <div class="container">

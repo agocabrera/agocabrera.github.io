@@ -31,15 +31,7 @@
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbar-user-dropdown" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbar-user-dropdown">
-              <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
-              <li><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
-              <li><a class="dropdown-item" href="#" id="navbar-logout">Cerrar sesión</a></li>
-            </ul>
+          <li class="nav-item" id="navbar-user">
           </li>
         </ul>
       </div>
@@ -52,9 +44,8 @@
 
       <div class="row">
 
-        <div class="col mt-4">
-          <h1 class="text-center mb-3">Carrito</h1>
-
+        <div class="col">
+          <h1 class="text-center mb-3 mt-4">Carrito</h1>
           <table class="table cart-table">
             <thead>
               <tr>
@@ -69,62 +60,58 @@
             <tbody id="cart-items">
             </tbody>
           </table>
-
         </div>
 
       </div>
 
-      <div class="row row-cols-1">
+      <div class="row row-cols-1 row-cols-lg-2">
 
-        <form class="col mt-5" id="address-form" novalidate>
-
-          <h2 class="mb-3">Dirección de envío</h2>
-
+        <form class="col col-lg-5" id="address-form" novalidate>
+          <h2 class="mb-3 mt-5">Dirección de envío</h2>
           <div class="input-group shipping mb-2">
             <span class="input-group-text">Calle</span>
             <input type="text" name="shipping-main-street" class="form-control" id="shipping-main-street" required>
             <div class="invalid-feedback">Ingrese calle.</div>
             <div class="valid-feedback">OK.</div>
           </div>
-
           <div class="input-group shipping mb-2">
             <span class="input-group-text">Número</span>
             <input type="text" name="shipping-door-number" class="form-control" id="shipping-door-number" required>
             <div class="invalid-feedback">Ingrese número de puerta.</div>
             <div class="valid-feedback">OK.</div>
           </div>
-
           <div class="input-group shipping">
             <span class="input-group-text">Esquina</span>
             <input type="text" name="shipping-corner-street" class="form-control" id="shipping-corner-street" required>
             <div class="invalid-feedback">Ingrese esquina.</div>
             <div class="valid-feedback">OK.</div>
           </div>
-
         </form>
 
-        <div class="col mt-5" id="shipping-method">
-          <h2 class="mb-3">Tipo de envío</h2>
-          <div class="form-check">
+        <div class="col col-lg-3 offset-lg-1" id="shipping-method">
+          <h2 class="mb-3 mt-5">Tipo de envío</h2>
+          <div class="form-check mb-2">
             <input type="radio" class="form-check-input" name="shipping-method" value="3" id="shipping-premium"
               required>
             <label for="shipping-premium" class="form-check-label">Premium: 2 a 5 días (15%)</label>
           </div>
-          <div class="form-check">
+          <div class="form-check mb-2">
             <input type="radio" class="form-check-input" name="shipping-method" value="2" id="shipping-express">
             <label for="shipping-express" class="form-check-label">Express: 5 a 8 días (7%)</label>
           </div>
-          <div class="form-check">
+          <div class="form-check mb-2">
             <input type="radio" class="form-check-input" name="shipping-method" value="1" id="shipping-standard">
             <label for="shipping-standard" class="form-check-label">Standard: 12 a 15 días (5%)</label>
           </div>
         </div>
 
-        <div class="col mt-5">
-          <h2 class="mb-3">Costos</h2>
+      </div>
 
+      <div class="row row-cols-1">
+
+        <div class="col">
+          <h2 class="mb-3 mt-5">Costos</h2>
           <div class="list-group">
-
             <div class="list-group-item bg-light d-flex">
               <div class="w-50">
                 <h5 class="mb-1">Subtotal</h5>
@@ -134,7 +121,6 @@
                 <div class="number-font" id="subtotal-cost">─</div>
               </div>
             </div>
-
             <div class="list-group-item bg-light d-flex">
               <div class="w-50">
                 <h5 class="mb-1">Costo de envío</h5>
@@ -144,7 +130,6 @@
                 <div class="number-font" id="shipping-cost">─</div>
               </div>
             </div>
-
             <div class="list-group-item bg-light d-flex">
               <div class="w-50">
                 <h5 class="mb-1">Total</h5>
@@ -154,21 +139,21 @@
                 <div class="fw-bold number-font" id="total-cost">─</div>
               </div>
             </div>
-
           </div>
-
         </div>
 
-        <div class="col mt-5">
-          <h2 class="mb-3">Forma de pago</h2>
+        <div class="col">
+          <h2 class="mb-3 mt-5">Forma de pago</h2>
           <p id="payment-method-display">Seleccione una forma de pago.</p>
           <a data-bs-toggle="modal" href="#payment-modal" role="button">Seleccionar</a>
         </div>
 
-        <button type="submit" form="address-form" class="btn btn-primary btn-lg mt-5">Finalizar
-          compra</button>
-
       </div>
+
+      <button type="submit" form="address-form" class="btn btn-primary btn-lg mt-5">Finalizar
+        compra</button>
+
+    </div>
 
     </div>
 
@@ -253,7 +238,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
         </div>
 
       </div>
@@ -263,6 +248,21 @@
   <div class="alert alert-success alert-dismissible d-none" id="purchase-success" role="alert">
     <div class="text-center">¡Has comprado con éxito!</div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="close-alert"></button>
+  </div>
+
+  <div class="modal fade" id="please-login-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>Debe iniciar sesión para ver el carrito.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="please-login-button">Iniciar
+            sesión</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="js/bootstrap.bundle.min.js"></script>

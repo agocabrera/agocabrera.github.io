@@ -11,32 +11,70 @@ function parseJwt(token) {
 
 // Al iniciar sesión con Google.
 function handleCredentialResponse(response) {
-    localStorage.setItem("username", parseJwt(response.credential).name);
+    let userData = parseJwt(response.credential)
+
+    loginUser(userData.email, userData.given_name, userData.family_name);
     window.location.href = "inicio.html";
 }
 
-// Al iniciar sesión con email/contraseña.
-document.getElementById("submit").addEventListener("click", function () {
-    let loginOk = true;
-    let modalContentToAppend = "<p>Por favor ingrese:</p><ul>";
+// Si el email ingresado coincide con el email de uno de los usuarios en 
+// el almacenamiento local, establecer ese usuario como activo, sino
+// crear un usuario nuevo con los datos ingresados.
+function loginUser(email, name, surname) {
 
-    if (document.getElementById("email").value == "") {
-        loginOk = false;
-        modalContentToAppend += "<li>Email</li>"
-    }
+    if (localStorage.getItem("user-" + email) === null) {
 
-    if (document.getElementById("password").value == "") {
-        loginOk = false;
-        modalContentToAppend += "<li>Contraseña</li>"
-    }
+        let newUser = {
+            email: email,
+            name: name,
+            secondName: "",
+            surname: surname,
+            secondSurname: "",
+            phoneNumber: "",
+            profilePicture: "",
+            cart: []
+        }
 
-    modalContentToAppend += '</ul><button type="button" class="btn btn-primary float-end" data-bs-dismiss="modal">Cerrar</button>';
-    document.getElementById("modal-body").innerHTML = modalContentToAppend;
+        localStorage.setItem("user-" + email, JSON.stringify(newUser));
+        localStorage.setItem("active-user", email);
 
-    if (loginOk) {
-        localStorage.setItem("username", document.getElementById("email").value);
-        window.location.href = "inicio.html";
     } else {
-        new bootstrap.Modal(document.getElementById("modal")).show();
+
+        localStorage.setItem("active-user", email);
+
     }
-});
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Al iniciar sesión con email/contraseña.
+    document.getElementById("submit").addEventListener("click", function () {
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const errorModal = new bootstrap.Modal(document.getElementById("error-modal"));
+        let modalContentToAppend = "";
+        let loginOk = true;
+
+        if (!emailInput.checkValidity()) {
+            loginOk = false;
+            modalContentToAppend += "<li>Email válido</li>";
+        }
+
+        if (!passwordInput.checkValidity()) {
+            loginOk = false;
+            modalContentToAppend += "<li>Contraseña</li>";
+        }
+
+        document.getElementById("error-modal-body").innerHTML = modalContentToAppend;
+
+        if (loginOk) {
+            loginUser(emailInput.value, "", "");
+            window.location.href = "inicio.html";
+        } else {
+            errorModal.show();
+        }
+
+    });
+
+}, false);

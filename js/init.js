@@ -56,11 +56,57 @@ let setId = function (type, id) {
 
 }
 
-let navbarShowUsername = function () {
-  document.getElementById("navbar-user-dropdown").innerHTML = localStorage.getItem("username");
+let navbarLogout = function () {
+  localStorage.removeItem("active-user");
+  window.location.href = "index.html";
 }
 
-let navbarLogout = function () {
-  localStorage.removeItem("username");
-  window.location.href = "index.html";
+let userControls = function () {
+  // Si el usuario inició sesión...
+  if (localStorage.getItem("active-user") !== null) {
+    // Traer sus datos del almacenamiento local.
+    let activeUser = JSON.parse(localStorage.getItem("user-" + localStorage.getItem("active-user")));
+    let userDisplay;
+
+    // Si ingresó su nombre mostrarlo, sino mostrar email.
+    if (activeUser.name !== "") {
+
+      userDisplay = activeUser.name;
+
+    } else {
+
+      userDisplay = activeUser.email;
+
+    }
+
+    // Mostrar controles del usuario.
+    document.getElementById("navbar-user").classList.add("dropdown");
+    document.getElementById("navbar-user").innerHTML = `
+      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        ${userDisplay}
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark">
+        <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
+        <li><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
+        <li><a class="dropdown-item" href="#" id="navbar-logout">Cerrar sesión</a></li>
+      </ul>`;
+
+    document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
+
+
+  } else { // Si el usuario no inició sesión...
+
+    document.getElementById("navbar-user").innerHTML = `<a class="nav-link" href="index.html" role="button">Iniciar sesión</a>`;
+
+    // Al intentar entrar a una página que requiera iniciar sesión mostrar error y redirigir.
+    if (window.location.pathname.endsWith("cart.html") || window.location.pathname.endsWith("my-profile.html")) {
+
+      document.getElementById("please-login-button").addEventListener("click", navbarLogout, false);
+      let pleaseLoginModal = new bootstrap.Modal(document.getElementById("please-login-modal"));
+      pleaseLoginModal.show();
+
+    }
+
+  }
+
 }

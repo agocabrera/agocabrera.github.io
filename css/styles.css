@@ -201,7 +201,7 @@ a.custom-card:hover {
 
 #pro-related>div {
   border: 1px solid rgba(0, 0, 0, 0.125);
-  width: 48%;
+  padding: 0px;
   cursor: pointer;
 }
 
@@ -209,7 +209,7 @@ a.custom-card:hover {
   background-color: #f8f9fa
 }
 
-/* -------------------------------------- */
+/* Carrito */
 
 table.cart-table {
   table-layout: fixed;
@@ -272,10 +272,10 @@ td input::-webkit-inner-spin-button {
   #cart-items img {
     width: 60px;
   }
-}
 
-.shipping {
-  max-width: 25em;
+  #comments-list>div {
+    font-size: 0.75rem;
+  }
 }
 
 .number-font {
@@ -284,4 +284,10 @@ td input::-webkit-inner-spin-button {
 
 #purchase-success {
   z-index: 1;
+}
+
+#profile-picture {
+  height: 100px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
 }

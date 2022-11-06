@@ -28,11 +28,8 @@ function updateTotalCosts() {
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function (e) {
-    // Mostrar nombre de usuario en la barra de navegación.
-    navbarShowUsername();
-
-    // Agregar event listener al botón de cerrar sesión.
-    document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
+    // Controles del usuario en la barra de navegación.
+    userControls();
 
     document.getElementById("productCountInput").addEventListener("change", function () {
         productCount = this.value;

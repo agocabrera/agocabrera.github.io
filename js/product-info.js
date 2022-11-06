@@ -4,45 +4,60 @@ let product = {};
 // Lista de comentarios del producto.
 let productCommentsArray = [];
 
-// Lista de productos en el carrito (almacenamiento local).
-let cartItems = [];
+// Objeto con los datos del usuario que inició sesión.
+// Es necesario para enviar comentarios nuevos y para agregar ítems a su carrito.
+let activeUser = {};
 
 // Tomar del objeto los datos del producto y mostrarlos en la página.
 function showProductInfo(object) {
     document.getElementById("pro-info").innerHTML =
-        `<span class="d-inline fw-light">${object.category}</span>
-        <span class="float-end fw-light">${object.soldCount} vendidos</span>
+        `<span class="d-inline"><a href="products.html" class="text-decoration-none fw-light text-secondary">← ${object.category}</a></span>
+        <span class="float-end fw-light text-secondary">${object.soldCount} vendidos</span>
         <div class="d-grid gap-2">
             <h1 class="fs-1 mb-0">${object.name}</h1>
-            <span class="fw-bold fs-4">${object.currency} ${object.cost}</span>
+            <span class="fw-bold fs-4 number-font">${object.cost.toLocaleString("es-UY", { style: "currency", currency: object.currency, minimumFractionDigits: 0 })}</span>
             <p>${object.description}</p>
-            <button type="button" class="btn btn-success" id="add-to-cart">Comprar</button>
+            <p class="text-danger d-none" id="login-required-message">Inicie sesión para agregar ítems al carrito.</p>
+            <p class="text-danger d-none" id="already-added-message">Este ítem ya se encuentra en su carrito.</p>
+            <button type="button" class="btn btn-success" id="add-to-cart">Agregar al carrito</button>
         </div>`;
 
-    // Agregar event listener al botón de comprar, al presionarlo crear un objeto nuevo
-    // con la información del producto y agregarlo al carrito en el almacenamiento local.
-    document.getElementById("add-to-cart").addEventListener("click", function () {
-        let newCartItem = {};
-        newCartItem.id = product.id;
-        newCartItem.name = product.name;
-        newCartItem.count = 1;
-        newCartItem.unitCost = product.cost;
-        newCartItem.currency = product.currency;
-        newCartItem.image = product.images[0];
+    // Agregar event listener al botón de agregar al carrito.
+    document.getElementById("add-to-cart").addEventListener("click", addToCart, false);
 
-        cartItems.push(newCartItem);
-        localStorage.setItem("cart", JSON.stringify(cartItems));
+    // Desactivar el botón de comprar si el producto ya se encuentra en
+    // el carrito o si el usuario no inició sesión.
+    if (activeUser === null) {
         document.getElementById("add-to-cart").classList.add("disabled");
-    }, false);
+        document.getElementById("login-required-message").classList.remove("d-none");
+    } else {
 
-    // Desactivar el botón de comprar si el producto ya se encuentra en el carrito.
-    for (let i = 0; i < cartItems.length; i++) {
-        let item = cartItems[i];
-        if (item.id === product.id) {
-            document.getElementById("add-to-cart").classList.add("disabled");
-            break;
+        for (let i = 0; i < activeUser.cart.length; i++) {
+            if (activeUser.cart[i].id === product.id) {
+                document.getElementById("add-to-cart").classList.add("disabled");
+                document.getElementById("already-added-message").classList.remove("d-none");
+                break;
+            }
         }
+
     }
+}
+
+// Agregar el producto al carrito del usuario y guardar en almacenamiento local.
+function addToCart() {
+
+    let newCartItem = {
+        id: product.id,
+        name: product.name,
+        count: 1,
+        unitCost: product.cost,
+        currency: product.currency,
+        image: product.images[0]
+    }
+
+    activeUser.cart.push(newCartItem);
+    localStorage.setItem("user-" + activeUser.email, JSON.stringify(activeUser));
+    document.getElementById("add-to-cart").classList.add("disabled");
 
 }
 
@@ -70,7 +85,7 @@ function showProductRelated(array) {
     for (let i = 0; i < array.length; i++) {
         const product = array[i];
         document.getElementById("pro-related").innerHTML +=
-            `<div class="card shadow-sm rounded-3" onclick="setId('product', ${product.id})">
+            `<div class="col col-sm-5 col-lg-3 card shadow-sm rounded-3 mb-3 ms-2 me-2" onclick="setId('product', ${product.id})">
                 <img src="${product.image}" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">${product.name}</h5>
@@ -117,20 +132,22 @@ function showStars(number) {
 
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
-    // Mostrar nombre de usuario en la barra de navegación.
-    navbarShowUsername();
 
-    // Agregar event listener al botón de cerrar sesión.
-    document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
+    // Controles del usuario en la barra de navegación.
+    userControls();
 
-    // Obtener carrito (array) desde el almacenamiento local, para desactivar
-    // el botón de comprar en caso que el producto ya esté en el mismo.
-    if (localStorage.getItem("cart") != null) {
-        cartItems = JSON.parse(localStorage.getItem("cart"));
+    // Obtener los datos del usuario que inició sesión del almacenamiento local.
+    activeUser = JSON.parse(localStorage.getItem("user-" + localStorage.getItem("active-user")));
+
+    // Si no hay una sesión activa, deshabilitar los inputs para comentarios nuevos.
+    if (activeUser === null) {
+        document.getElementById("comment-description").setAttribute("disabled", "");
+        document.getElementById("comment-score").setAttribute("disabled", "");
+        document.getElementById("comment-send").classList.add("disabled");
+        document.getElementById("comment-error").classList.remove("d-none");
     }
 
-    // Obtener el objeto con la información del producto y
-    // llamar a showProductInfo() y showProductImages().
+    // Solicitar el objeto con la información del producto y llamar a showProductInfo() y showProductImages().
     getJSONData(PRODUCT_INFO_URL + localStorage.getItem("proID") + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
             product = resultObj.data;
@@ -142,8 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Obtener la lista con los comentarios del producto y
-    // llamar a showProductComments().
+    // Solicitar la lista con los comentarios del producto y llamar a showProductComments().
     getJSONData(PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("proID") + EXT_TYPE).then(function (resultObj) {
         if (resultObj.status === "ok") {
             productCommentsArray = resultObj.data;
@@ -153,33 +169,45 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Al hacer click en el botón para enviar un comentario, crear un objeto nuevo para
-    // guardar los datos relacionados a ese comentario, agregar ese objeto a la lista
-    // de comentarios del producto y llamar de nuevo a showProductComments().
+    // Al hacer click en el botón para enviar un nuevo comentario.
     document.getElementById("comment-send").addEventListener("click", function () {
-        let newComment = {};
+
+        // Si el comentario está vacío, mostrar error.
+        if (document.getElementById("comment-description").value === "") {
+            document.getElementById("comment-error").innerHTML = "El comentario no puede estar vacío.";
+            document.getElementById("comment-error").classList.remove("d-none");
+            return;
+        }
 
         // Usando '"0" + ' y el método de strings slice() la fecha del comentario nuevo
         // queda con el mismo formato que la de los comentarios ya existentes.
-        let date = new Date();
-        let year = date.getFullYear();
-        let month = ("0" + (date.getMonth() + 1)).slice(-2);
-        let day = ("0" + date.getDate()).slice(-2);
-        let hour = ("0" + date.getHours()).slice(-2);
-        let minute = ("0" + date.getMinutes()).slice(-2);
-        let second = ("0" + date.getSeconds()).slice(-2);
+        let newDate = new Date();
+        let date = {
+            year: newDate.getFullYear(),
+            month: ("0" + (newDate.getMonth() + 1)).slice(-2),
+            day: ("0" + newDate.getDate()).slice(-2),
+            hour: ("0" + newDate.getHours()).slice(-2),
+            minute: ("0" + newDate.getMinutes()).slice(-2),
+            second: ("0" + newDate.getSeconds()).slice(-2)
+        }
 
-        newComment.product = parseInt(localStorage.getItem("proID"));
-        newComment.score = parseInt(document.getElementById("comment-score").value);
-        newComment.description = document.getElementById("comment-description").value;
-        newComment.user = localStorage.getItem("username");
-        newComment.dateTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+        // Crear un objeto con todos los datos del comentario nuevo.
+        let newComment = {
+            product: parseInt(localStorage.getItem("proID")),
+            score: parseInt(document.getElementById("comment-score").value),
+            description: document.getElementById("comment-description").value,
+            user: (activeUser.name !== "" ? activeUser.name : activeUser.email),
+            dateTime: `${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}:${date.second}`
+        }
 
+        // Agregar comentario a la lista de comentarios y mostrarla nuevamente.
         productCommentsArray.push(newComment);
         showProductComments(productCommentsArray);
 
+        // Restablecer los campos de descripción y calificación del comentario.
         document.getElementById("comment-description").value = "";
         document.getElementById("comment-score").value = 1;
+        document.getElementById("comment-error").classList.add("d-none");
 
     }, false);
 
