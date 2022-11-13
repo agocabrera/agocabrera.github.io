@@ -30,11 +30,23 @@ function showAlert(success) {
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Controles del usuario en la barra de navegación.
-    userControls();
+    // Mostrar controles del usuario en la barra de navegación.
+    showUserControls();
 
     // Obtener los datos del usuario que inició sesión desde el almacenamiento local.
     const activeUser = JSON.parse(localStorage.getItem("user-" + localStorage.getItem("active-user")));
+
+    // Si el usuario no inició sesión, mostrar una alerta.
+    if (activeUser === null) {
+
+        document.querySelector("main").innerHTML =
+            `<div class="alert alert-primary" role="alert">
+                Debe <a href="index.html" class="alert-link">iniciar sesión</a> para acceder a su perfil.
+            </div>`;
+
+        return;
+
+    }
 
     // Llenar los campos con los datos del usuario.
     document.getElementById("name").value = activeUser.name;

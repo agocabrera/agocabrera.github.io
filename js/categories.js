@@ -82,8 +82,8 @@ function sortAndShowCategories(sortCriteria, categoriesArray) {
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function (e) {
-    // Controles del usuario en la barra de navegación.
-    userControls();
+    // Mostrar controles del usuario en la barra de navegación.
+    showUserControls();
 
     getJSONData(CATEGORIES_URL).then(function (resultObj) {
         if (resultObj.status === "ok") {

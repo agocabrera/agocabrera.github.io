@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Controles del usuario en la barra de navegación.
-    userControls();
+    // Mostrar controles del usuario en la barra de navegación.
+    showUserControls();
 
     document.getElementById("autos").addEventListener("click", function () {
         localStorage.setItem("catID", 101);

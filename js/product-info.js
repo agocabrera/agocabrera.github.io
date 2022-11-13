@@ -133,8 +133,8 @@ function showStars(number) {
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Controles del usuario en la barra de navegación.
-    userControls();
+    // Mostrar controles del usuario en la barra de navegación.
+    showUserControls();
 
     // Obtener los datos del usuario que inició sesión del almacenamiento local.
     activeUser = JSON.parse(localStorage.getItem("user-" + localStorage.getItem("active-user")));

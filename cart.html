@@ -66,7 +66,7 @@
 
       <div class="row row-cols-1 row-cols-lg-2">
 
-        <form class="col col-lg-5" id="address-form" novalidate>
+        <form class="col col-lg-5 needs-validation" id="address-form" novalidate>
           <h2 class="mb-3 mt-5">Dirección de envío</h2>
           <div class="input-group shipping mb-2">
             <span class="input-group-text">Calle</span>
@@ -88,7 +88,7 @@
           </div>
         </form>
 
-        <div class="col col-lg-3 offset-lg-1" id="shipping-method">
+        <div class="col col-lg-3 offset-lg-1 needs-validation" id="shipping-method">
           <h2 class="mb-3 mt-5">Tipo de envío</h2>
           <div class="form-check mb-2">
             <input type="radio" class="form-check-input" name="shipping-method" value="3" id="shipping-premium"
@@ -191,22 +191,22 @@
         <div class="modal-body">
 
           <div class="form-check mb-2">
-            <input type="radio" class="form-check-input" name="payment-method-input" value="1" id="payment-card">
+            <input type="radio" class="form-check-input" name="payment-method-input" value="1" id="payment-card"
+              required>
             <label for="payment-card" class="form-check-label">Tarjeta de crédito</label>
           </div>
 
           <form class="row row-cols-2" id="card-form" novalidate>
             <div class="col mb-2">
               <label for="payment-card-number" class="form-label">Número de tarjeta</label>
-              <input type="text" name="payment-card-number" class="form-control" id="payment-card-number" required
-                disabled>
+              <input type="text" name="payment-card-number" class="form-control" id="payment-card-number" disabled>
               <div class="invalid-feedback">Ingrese número de tarjeta.</div>
               <div class="valid-feedback">OK.</div>
             </div>
 
             <div class="col mb-2">
               <label for="payment-card-code" class="form-label">Código de seg.</label>
-              <input type="text" name="payment-card-code" class="form-control" id="payment-card-code" required disabled>
+              <input type="text" name="payment-card-code" class="form-control" id="payment-card-code" disabled>
               <div class="invalid-feedback">Ingrese código de seguridad.</div>
               <div class="valid-feedback">OK.</div>
             </div>
@@ -214,7 +214,7 @@
             <div class="col mb-2">
               <label for="payment-card-expiration" class="form-label">Vencimiento (MM/AA)</label>
               <input type="text" name="payment-card-expiration" class="form-control" id="payment-card-expiration"
-                required disabled>
+                disabled>
               <div class="invalid-feedback">Ingrese fecha de vencimiento.</div>
               <div class="valid-feedback">OK.</div>
             </div>
@@ -228,8 +228,7 @@
           <form class="row row-cols-2" id="bank-form" novalidate>
             <div class="col mb-2">
               <label for="payment-bank-number" class="form-label">Número de cuenta</label>
-              <input type="text" name="payment-bank-number" class="form-control" id="payment-bank-number" required
-                disabled>
+              <input type="text" name="payment-bank-number" class="form-control" id="payment-bank-number" disabled>
               <div class="invalid-feedback">Ingrese número de cuenta.</div>
               <div class="valid-feedback">OK.</div>
             </div>
@@ -245,24 +244,9 @@
     </div>
   </div>
 
-  <div class="alert alert-success alert-dismissible d-none" id="purchase-success" role="alert">
+  <div class="alert alert-success alert-dismissible fade d-none" id="purchase-success" role="alert">
     <div class="text-center">¡Has comprado con éxito!</div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="close-alert"></button>
-  </div>
-
-  <div class="modal fade" id="please-login-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-body">
-          <p>Debe iniciar sesión para ver el carrito.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="please-login-button">Iniciar
-            sesión</button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script src="js/bootstrap.bundle.min.js"></script>

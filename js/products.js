@@ -1,4 +1,4 @@
-// Lista del objecto que contiene los productos.
+// Lista que contiene los productos.
 let currentProductsArray = [];
 
 // Mostrar en el listado los productos de la lista que recibe como argumento.
@@ -103,8 +103,8 @@ function clearFilter() {
 
 // Una vez cargado el documento.
 document.addEventListener("DOMContentLoaded", function () {
-  // Controles del usuario en la barra de navegación.
-  userControls();
+  // Mostrar controles del usuario en la barra de navegación.
+  showUserControls();
 
   // Agregar event listeners a los botones del listado.
   document.getElementById("filterCost").addEventListener("click", () => showProductsList(filterAndOrderList(currentProductsArray)), false);

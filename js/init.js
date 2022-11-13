@@ -56,26 +56,26 @@ let setId = function (type, id) {
 
 }
 
-let navbarLogout = function () {
+let logoutUser = function () {
   localStorage.removeItem("active-user");
   window.location.href = "index.html";
 }
 
-let userControls = function () {
+let showUserControls = function () {
   // Si el usuario inició sesión...
   if (localStorage.getItem("active-user") !== null) {
     // Traer sus datos del almacenamiento local.
     let activeUser = JSON.parse(localStorage.getItem("user-" + localStorage.getItem("active-user")));
-    let userDisplay;
+    let userName;
 
     // Si ingresó su nombre mostrarlo, sino mostrar email.
     if (activeUser.name !== "") {
 
-      userDisplay = activeUser.name;
+      userName = activeUser.name;
 
     } else {
 
-      userDisplay = activeUser.email;
+      userName = activeUser.email;
 
     }
 
@@ -83,7 +83,7 @@ let userControls = function () {
     document.getElementById("navbar-user").classList.add("dropdown");
     document.getElementById("navbar-user").innerHTML = `
       <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        ${userDisplay}
+        ${userName}
       </a>
       <ul class="dropdown-menu dropdown-menu-dark">
         <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
@@ -91,21 +91,12 @@ let userControls = function () {
         <li><a class="dropdown-item" href="#" id="navbar-logout">Cerrar sesión</a></li>
       </ul>`;
 
-    document.getElementById("navbar-logout").addEventListener("click", navbarLogout, false);
+    document.getElementById("navbar-logout").addEventListener("click", logoutUser, false);
 
+  } else {
 
-  } else { // Si el usuario no inició sesión...
-
+    // Si el usuario no inició sesión...
     document.getElementById("navbar-user").innerHTML = `<a class="nav-link" href="index.html" role="button">Iniciar sesión</a>`;
-
-    // Al intentar entrar a una página que requiera iniciar sesión mostrar error y redirigir.
-    if (window.location.pathname.endsWith("cart.html") || window.location.pathname.endsWith("my-profile.html")) {
-
-      document.getElementById("please-login-button").addEventListener("click", navbarLogout, false);
-      let pleaseLoginModal = new bootstrap.Modal(document.getElementById("please-login-modal"));
-      pleaseLoginModal.show();
-
-    }
 
   }
 

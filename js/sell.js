@@ -28,8 +28,8 @@ function updateTotalCosts() {
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function (e) {
-    // Controles del usuario en la barra de navegación.
-    userControls();
+    // Mostrar controles del usuario en la barra de navegación.
+    showUserControls();
 
     document.getElementById("productCountInput").addEventListener("change", function () {
         productCount = this.value;
